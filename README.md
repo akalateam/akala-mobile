@@ -1,2 +1,2 @@
-# akala-web
-Akala Web Project
+# akala-mobile
+Akala Mobile Project
