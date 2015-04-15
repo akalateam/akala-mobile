@@ -1,0 +1,32 @@
+<ion-view view-title="用户登陆">
+    <ion-content padding="true" class="has-header">
+        <form>
+            <ion-list>
+                <label class="item item-input">
+                    <span class="input-label">电话/邮箱:</span>
+                    <input type="text" ng-model="user.name" placeholder="">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">密码:</span>
+                    <input type="password" ng-model="user.password" placeholder="">
+                </label>
+            </ion-list>
+        </form>
+        <div>
+            <button href="#/forgetpwd" class="button button-calm button-clear" style="vertical-align: middle">忘记密码
+            </button>
+            <span class="padding assertive" style="vertical-align: middle; float:right;">{{user.status}}</span>
+        </div>
+        <button class="button button-balanced button-block" ng-click="signIn(user)">登陆</button>
+        <div>
+            <span style="font-size: 14px; line-height: 20px; color: #909090; margin-right: 10px">或</span>
+            <span style="background: url(img/snslogo.png) -135px 0px; width: 40px; height: 40px; margin-right: 5px; display: inline-block; vertical-align: middle"></span>
+            <span style=" background: url(img/snslogo.png) -45px 0px; width: 40px; height: 40px; margin-right: 5px; display: inline-block; vertical-align: middle"></span>
+        </div>
+        <div class="spacer" style="height: 20px;"></div>
+        <div><span style="vertical-align: middle">没有账号？</span>
+            <button href="#/signup" class="button button-calm button-clear" style="vertical-align: middle">免费注册
+            </button>
+        </div>
+    </ion-content>
+</ion-view>

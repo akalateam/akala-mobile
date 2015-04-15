@@ -31,11 +31,11 @@ gulp.task('sass', function (done) {
 });
 
 gulp.task('bower_dev', function (cb) {
-    runSequence('bower', 'concatjs', 'concatcss', 'minjs', 'mincss', cb);
+    runSequence('bower', 'concatjs', 'concatcss', 'mkfonts', 'minjs', 'mincss', cb);
 });
 
 gulp.task('bower_prd', function (cb) {
-    runSequence('bower_dev', 'cleanjscss', cb);
+    runSequence('bower_dev', 'cleanlib', cb);
 });
 
 gulp.task('bower', function (done) {
@@ -44,15 +44,21 @@ gulp.task('bower', function (done) {
         .on('end', done);
 });
 
+gulp.task('mkfonts', function (done) {
+    gulp.src('./www/lib/ionicons.*')
+        .pipe(gulp.dest('./www/lib/fonts/'))
+        .on('end', done);
+});
+
 gulp.task('concatjs', function (done) {
-    gulp.src(['./www/lib/angular.js', './www/lib/ionic.js', './www/lib/ionic-angular.js', './www/lib/*.js', '!./www/lib/lib.js', '!./www/lib/lib.min.js'])
+    gulp.src(['./www/lib/angular.js', './www/lib/ionic.js', './www/lib/ionic-angular.js', './www/lib/*.js', '!./www/lib/lib.js'])
         .pipe(concat('lib.js', {newLine: ';'}))
         .pipe(gulp.dest('./www/lib'))
         .on('end', done);
 });
 
 gulp.task('concatcss', function (done) {
-    gulp.src(['./www/lib/*.css', '!./www/lib/lib.css', '!./www/lib/lib.min.css'])
+    gulp.src(['./www/lib/*.css', '!./www/lib/lib.css'])
         .pipe(concat('lib.css'))
         .pipe(gulp.dest('./www/lib'))
         .on('end', done);
@@ -62,7 +68,7 @@ gulp.task('minjs', function (done) {
     gulp.src('./www/lib/lib.js')
         .pipe(uglify())
         .pipe(rename({extname: '.min.js'}))
-        .pipe(gulp.dest('./www/lib'))
+        .pipe(gulp.dest('./www/lib/js'))
         .on('end', done);
 });
 
@@ -73,12 +79,12 @@ gulp.task('mincss', function (done) {
         }))
         .pipe(csso())
         .pipe(rename({extname: '.min.css'}))
-        .pipe(gulp.dest('./www/lib'))
+        .pipe(gulp.dest('./www/lib/css'))
         .on('end', done);
 });
 
-gulp.task('cleanjscss', function (done) {
-    gulp.src(['./www/lib/*.js', './www/lib/*.css', '!./www/lib/lib.min.js', '!./www/lib/lib.min.css'])
+gulp.task('cleanlib', function (done) {
+    gulp.src(['./www/lib/*.*'])
         .pipe(rimraf())
         .on('end', done);
 });
