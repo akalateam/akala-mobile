@@ -12,7 +12,7 @@ angular.module('akala.controllers', [])
         }
     })
 
-    .controller('LoginCtrl', function ($scope, $ionicHistory, UserSrv) {
+    .controller('LoginCtrl', function ($scope, $state, $ionicLoading, UserSrv) {
         $scope.signIn = function (user) {
 
             if (!user || !user.userKey || !user.password) {
@@ -24,12 +24,15 @@ angular.module('akala.controllers', [])
             userInfo.userType = UserSrv.getUserType(user.userKey);
             userInfo.password = user.password;
 
+            $ionicLoading.show();
             UserSrv.setLocalUser(userInfo).then(UserSrv.logonWithLocalUser).then(function (user) {
-                $ionicHistory.goBack();
+                $state.go('tab.mine.summary');
+                $ionicLoading.hide();
             }).catch(function (error) {
                 $scope.$apply(function (error) {
                     $scope.loginError = error;
                 }(error));
+                $ionicLoading.hide();
             });
         }
     });

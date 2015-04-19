@@ -1,4 +1,4 @@
-angular.module('akala', ['ionic', 'akala.services', 'akala.filters', 'akala.controllers']).run(function ($ionicPlatform) {
+angular.module('akala', ['ionic', 'akala.services', 'akala.filters', 'akala.directives', 'akala.controllers']).run(function ($ionicPlatform) {
     $ionicPlatform.ready().then(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -12,6 +12,8 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.filters', 'akala.cont
     });
 }).run(function ($rootScope, $http, UserSrv) {
     UserSrv.logonWithLocalUser();
+}).constant('$ionicLoadingConfig', {
+    template: '<ion-spinner class="spinner-balanced"></ion-spinner>'
 }).config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $ionicConfigProvider.tabs.position('bottom');
     $ionicConfigProvider.tabs.style('standard');
