@@ -5,30 +5,31 @@ angular.module('akala.controllers', [])
     .controller('ShopCtrl', function ($scope) {
     })
 
-    .controller('LoginCtrl', function ($scope, $http) {
-        $scope.signIn = function (user) {
-            var responsePromise = $http.get(akala.httpconf.url + 'ws/sec/test', {
-                headers: {
-                    'Authorization': $scope.getAuthHead(user.name, user.password)
-                }
-            });
-            responsePromise.success(function (data, status, headers, config) {
-                user.status = '登陆成功';
-            });
-            responsePromise.error(function (data, status, headers, config) {
-                user.status = '登录失败';
-            });
-        };
-
-        $scope.getAuthHead = function (username, password) {
-            var userNameAndType = '';
-            if (validator.isMobilePhone(username, 'zh-CN')) {
-                userNameAndType = username + '|' + 'Phone';
-            } else if (validator.isEmail(username)) {
-                userNameAndType = username + '|' + 'Email';
-            }
-            return 'Basic ' + btoa(userNameAndType + ':' + password);
+    .controller('MineSummaryCtrl', function ($scope, $rootScope, UserSrv) {
+        $scope.logout = function () {
+            UserSrv.removeLocalUser();
+            delete $rootScope.localUserInfo;
         }
     })
 
-    .controller('MineCtrl', function ($scope) {});
+    .controller('LoginCtrl', function ($scope, $ionicHistory, UserSrv) {
+        $scope.signIn = function (user) {
+
+            if (!user || !user.userKey || !user.password) {
+                return;
+            }
+
+            var userInfo = {};
+            userInfo.userKey = user.userKey;
+            userInfo.userType = UserSrv.getUserType(user.userKey);
+            userInfo.password = user.password;
+
+            UserSrv.setLocalUser(userInfo).then(UserSrv.logonWithLocalUser).then(function (user) {
+                $ionicHistory.goBack();
+            }).catch(function (error) {
+                $scope.$apply(function (error) {
+                    $scope.loginError = error;
+                }(error));
+            });
+        }
+    });

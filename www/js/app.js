@@ -1,5 +1,5 @@
-angular.module('akala', ['ionic', 'akala.controllers']).run(function ($ionicPlatform) {
-    $ionicPlatform.ready(function () {
+angular.module('akala', ['ionic', 'akala.services', 'akala.filters', 'akala.controllers']).run(function ($ionicPlatform) {
+    $ionicPlatform.ready().then(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -10,8 +10,9 @@ angular.module('akala', ['ionic', 'akala.controllers']).run(function ($ionicPlat
             StatusBar.styleLightContent();
         }
     });
+}).run(function ($rootScope, $http, UserSrv) {
+    UserSrv.logonWithLocalUser();
 }).config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
-
     $ionicConfigProvider.tabs.position('bottom');
     $ionicConfigProvider.tabs.style('standard');
 
@@ -52,7 +53,7 @@ angular.module('akala', ['ionic', 'akala.controllers']).run(function ($ionicPlat
         .state('tab.mine.summary', {
             url: "/summary",
             templateUrl: 'templates/mine-summary.html',
-            controller: 'MineCtrl'
+            controller: 'MineSummaryCtrl'
         })
 
         .state('tab.mine.login', {

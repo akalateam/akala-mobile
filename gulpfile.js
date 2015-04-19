@@ -45,7 +45,7 @@ gulp.task('bower', function (done) {
 });
 
 gulp.task('mkfonts', function (done) {
-    gulp.src('./www/lib/ionicons.*')
+    gulp.src(['./www/lib/*.eot', './www/lib/*.svg', './www/lib/*.ttf', './www/lib/*.woff', './www/lib/*.woff2'])
         .pipe(gulp.dest('./www/lib/fonts/'))
         .on('end', done);
 });

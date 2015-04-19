@@ -1,32 +1,58 @@
 <ion-view view-title="用户登陆">
-    <ion-content padding="true" class="has-header">
-        <form>
+    <ion-content padding="true" class="has-header" ng-controller="LoginCtrl">
+        <form name="loginForm" novalidate>
             <ion-list>
                 <label class="item item-input">
-                    <span class="input-label">电话/邮箱:</span>
-                    <input type="text" ng-model="user.name" placeholder="">
+                    <i class="icon placeholder-icon ion-android-person"></i>
+                    <input type="text" name="userKey" ng-model="user.userKey" placeholder="电话/邮箱" required>
+
+                    <i class="icon placeholder-icon ion-checkmark-round balanced"
+                       ng-show="(loginForm.$loginBtn || loginForm.userKey.$touched) && !loginForm.userKey.$error.required"
+                       style="position: relative; left: -15px;"></i>
+                    <i class="icon placeholder-icon ion-close-round assertive"
+                       ng-show="(loginForm.$loginBtn || loginForm.userKey.$touched) && loginForm.userKey.$error.required"
+                       style="position: relative; left: -15px;"></i>
                 </label>
+
                 <label class="item item-input">
-                    <span class="input-label">密码:</span>
-                    <input type="password" ng-model="user.password" placeholder="">
+                    <i class="icon placeholder-icon ion-android-lock"></i>
+                    <input type="password" name="password" ng-model="user.password" placeholder="请输入密码" required>
+                    <i class="icon placeholder-icon ion-checkmark-round balanced"
+                       ng-show="(loginForm.$loginBtn || loginForm.password.$touched) && !loginForm.password.$error.required"
+                       style="position: relative; left: -15px;"></i>
+                    <i class="icon placeholder-icon ion-close-round assertive"
+                       ng-show="(loginForm.$loginBtn || loginForm.password.$touched) && loginForm.password.$error.required"
+                       style="position: relative; left: -15px;"></i>
                 </label>
+
+                <div ng-show="(loginForm.$loginBtn || loginForm.userKey.$touched) && loginForm.userKey.$error.required"
+                     class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">请输入正确电话/邮箱
+                </div>
+                <div ng-show="(loginForm.$loginBtn || loginForm.password.$touched) && loginForm.password.$error.required"
+                     class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">请输入正确密码
+                </div>
+                <div class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">{{loginError}}
+                </div>
+
             </ion-list>
+            <button href="#/forgetpwd" class="button button-calm button-clear button-small" style="padding-left: 0px;">
+                忘记密码
+            </button>
+            <button name="loginBtn" class="button button-balanced button-block" ng-click="signIn(user)">登陆</button>
         </form>
         <div>
-            <button href="#/forgetpwd" class="button button-calm button-clear" style="vertical-align: middle">忘记密码
+            <span style="font-size: 12px;line-height: 26px;" style="vertical-align: middle;">没有账号？</span>
+            <button href="#/signup" class="button button-calm button-clear button-small"
+                    style="vertical-align: middle;">免费注册
             </button>
-            <span class="padding assertive" style="vertical-align: middle; float:right;">{{user.status}}</span>
         </div>
-        <button class="button button-balanced button-block" ng-click="signIn(user)">登陆</button>
+        <div style="text-align: center;margin-bottom: 10px;">
+            <span style="border-bottom: 1px #909090 solid;width: 46%;display: inline-block;">&nbsp;</span>
+            <span style="font-size: 14px; line-height: 20px; color: #909090; top: 10px; position: relative;">或</span>
+            <span style="border-bottom: 1px #909090 solid;width: 46%;display: inline-block;">&nbsp;</span>
+        </div>
         <div>
-            <span style="font-size: 14px; line-height: 20px; color: #909090; margin-right: 10px">或</span>
-            <span style="background: url(img/snslogo.png) -135px 0px; width: 40px; height: 40px; margin-right: 5px; display: inline-block; vertical-align: middle"></span>
-            <span style=" background: url(img/snslogo.png) -45px 0px; width: 40px; height: 40px; margin-right: 5px; display: inline-block; vertical-align: middle"></span>
-        </div>
-        <div class="spacer" style="height: 20px;"></div>
-        <div><span style="vertical-align: middle">没有账号？</span>
-            <button href="#/signup" class="button button-calm button-clear" style="vertical-align: middle">免费注册
-            </button>
+            <img src="img/wechat_logo.png" style="width: 50px">
         </div>
     </ion-content>
 </ion-view>

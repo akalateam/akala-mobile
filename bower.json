@@ -4,6 +4,7 @@
   "dependencies": {
     "ionic": "driftyco/ionic-bower#1.0.0-rc.2",
     "validator-js": "^3.11.2",
-    "js-base64": "^2.1.7"
+    "js-base64": "^2.1.7",
+    "localforage": "^1.2.2"
   }
 }

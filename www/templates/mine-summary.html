@@ -1,42 +1,44 @@
 <ion-view view-title="用户管理">
-    <ion-content class="padding">
+    <ion-content padding="true" ng-controller="MineSummaryCtrl">
 
         <div class="list">
             <div class="item item-avatar">
-                <img src="img/user1.jpg">
+                <img src="img/user1.jpg" ng-if="!localUserInfo || !localUserInfo.valid">
+                <img src="img/user2.png" ng-if="localUserInfo && localUserInfo.valid">
 
-                <h2 class="balanced">您好</h2>
+                <p><b>您好</b></p>
 
-                <p><b>匿名用户</b></p>
+                <h2 ng-if="!localUserInfo || !localUserInfo.valid"><b class="assertive">匿名用户</b></h2>
+
+                <h2 ng-if="localUserInfo && localUserInfo.valid"><b class="balanced">{{(localUserInfo.userType|translate)
+                    + "用户 " + localUserInfo.userKey}}</b></h2>
             </div>
 
-            <div class="spacer" style="height: 20px;"></div>
-
-            <a class="item item-icon-left assertive" href="#/tab/mine/login">
-                <i class="icon ion-log-in"></i>
+            <a class="item item-icon-left" href="#/tab/mine/login" ng-if="!localUserInfo || !localUserInfo.valid">
+                <i class="icon ion-log-in balanced"></i>
                 登陆系统
             </a>
-            <a class="item item-icon-left assertive" href="#">
-                <i class="icon ion-log-out"></i>
+            <a class="item item-icon-left" href="#" ng-if="localUserInfo && localUserInfo.valid" ng-click="logout()">
+                <i class="icon ion-log-out assertive"></i>
                 退出系统
             </a>
 
             <div class="spacer" style="height: 20px;"></div>
 
             <a class="item item-icon-left" href="#">
-                <i class="icon ion-ios-paw balanced"></i>
+                <i class="icon ion-android-time dark"></i>
                 历史记录
             </a>
             <a class="item item-icon-left" href="#">
-                <i class="icon ion-android-favorite balanced"></i>
+                <i class="icon ion-android-favorite-outline dark"></i>
                 我的收藏
             </a>
             <a class="item item-icon-left" href="#">
-                <i class="icon ion-trophy balanced"></i>
+                <i class="icon ion-android-bulb dark"></i>
                 我的成就
             </a>
             <a class="item item-icon-left" href="#">
-                <i class="icon ion-email balanced"></i>
+                <i class="icon ion-android-notifications-none dark"></i>
                 系统消息
                 <span class="badge badge-assertive">1</span>
             </a>
