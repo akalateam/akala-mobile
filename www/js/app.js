@@ -12,6 +12,8 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
     });
 }).run(function ($rootScope, $http, UserSrv) {
     UserSrv.logonWithLocalUser();
+}).constant('$ionicLoadingConfig', {
+    template: '<ion-spinner class="spinner-balanced"></ion-spinner>'
 }).config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $ionicConfigProvider.tabs.position('bottom');
     $ionicConfigProvider.tabs.style('standard');
