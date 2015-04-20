@@ -1,4 +1,4 @@
-angular.module('akala', ['ionic', 'akala.services', 'akala.filters', 'akala.controllers']).run(function ($ionicPlatform) {
+angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.filters', 'akala.controllers']).run(function ($ionicPlatform) {
     $ionicPlatform.ready().then(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -60,6 +60,12 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.filters', 'akala.cont
             url: "/login",
             templateUrl: 'templates/login.html',
             controller: 'LoginCtrl'
+        })
+
+        .state('tab.mine.signup', {
+            url:'/signup',
+            templateUrl: 'templates/signup.html',
+            controller: 'SignupCtrl'
         });
 
     // if none of the above states are matched, use this as the fallback

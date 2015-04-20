@@ -71,4 +71,44 @@ angular.module('akala.services', [])
             var userKeyAndType = userKey + '|' + userType;
             return 'Basic ' + btoa(userKeyAndType + ':' + password);
         };
+        self.checkUserExist = function(userKey) {
+            var userType = self.getUserType(userKey);
+            var deferred = self.$q.defer();
+            if (userType && userKey) {
+                var authPromise = $http.get(akala.httpconf.url + 'ws/chekUserExist', {
+                        params: {
+                            userKey: userKey,
+                            userType: userType
+                        }
+                    }
+                );
+                authPromise.success(function (data) {
+                    deferred.resolve(data);
+                });
+                authPromise.error(function (data) {
+                    deferred.reject("连接失败，请重试");
+                });
+            } else {
+                deferred.resolve(false);
+            }
+            return deferred.promise;
+        };
+        self.signupUser = function(userInfo) {
+            var deferred = self.$q.defer();
+            var authPromise = $http.get(akala.httpconf.url + 'ws/signupUser', {
+                    params: {
+                        userKey: userInfo.userKey,
+                        userType: userInfo.userType,
+                        password: userInfo.password
+                    }
+                }
+            );
+            authPromise.success(function () {
+                    deferred.resolve(userInfo);
+            });
+            authPromise.error(function (data) {
+                deferred.reject('用户已经被注册');
+            });
+            return deferred.promise;
+        }
     });
