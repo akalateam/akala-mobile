@@ -19,10 +19,10 @@
                 </tr>
             </table>
         </div>
-        <form name="phone_form" ng-show="signupType != 'Email'" ng-submit="signupUser(user)" novalidate>
+        <form name="phone_form" ng-show="signupType != 'Email'" ng-submit="signupUser()" novalidate>
             <div class="list padding">
                 <label class="item item-input">
-                    <span class="input-label">手机号码</span>
+                    <i class="icon placeholder-icon ion-android-phone-portrait"></i>
                     <input type="text" name="phone" ng-model="user.phone" placeholder="输入手机号码" akala-phone akala-unique
                            required>
                     <i class="icon placeholder-icon ion-checkmark-round balanced"
@@ -36,7 +36,7 @@
                     </button>
                 </label>
                 <label class="item item-input">
-                    <span class="input-label">验证码</span>
+                    <i class="icon placeholder-icon ion-android-attach"></i>
                     <input type="text" name="identityCode" ng-model="user.identityCode" placeholder="输入短信验证码" required>
                     <i class="icon placeholder-icon ion-checkmark-round balanced"
                        ng-show="phone_form.identityCode.$touched && !phone_form.identityCode.$error.required"
@@ -46,7 +46,7 @@
                        style="position: relative; left: -15px;"></i>
                 </label>
                 <label class="item item-input">
-                    <span class="input-label">密码</span>
+                    <i class="icon placeholder-icon ion-android-lock"></i>
                     <input type="password" name="password" ng-model="user.password" ng-minlength="6"
                            placeholder="输入六位以上密码" required>
                     <i class="icon placeholder-icon ion-checkmark-round balanced"
@@ -75,10 +75,10 @@
             </div>
         </form>
 
-        <form name="email_form" ng-show="signupType == 'Email'" ng-submit="signupUser(user)" novalidate>
+        <form name="email_form" ng-show="signupType == 'Email'" ng-submit="signupUser()" novalidate>
             <div class="list padding">
                 <label class="item item-input">
-                    <span class="input-label">邮箱</span>
+                    <i class="icon placeholder-icon ion-android-mail"></i>
                     <input type="email" name="email" ng-model="user.email" placeholder="请输入邮箱" akala-unique required>
                     <i class="icon placeholder-icon ion-checkmark-round balanced"
                        ng-show="email_form.email.$touched && !(email_form.email.$error.email || email_form.email.$error.unique || email_form.email.$error.required)"
@@ -88,7 +88,7 @@
                        style="position: relative; left: -15px;"></i>
                 </label>
                 <label class="item item-input">
-                    <span class="input-label">密码</span>
+                    <i class="icon placeholder-icon ion-android-lock"></i>
                     <input type="password" name="password" ng-model="user.password" ng-minlength="6"
                            placeholder="输入六位以上密码" required>
 

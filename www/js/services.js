@@ -104,7 +104,10 @@ angular.module('akala.services', [])
                 }
             );
             authPromise.success(function () {
-                    deferred.resolve(userInfo);
+                self.$rootScope.localUserInfo = userInfo;
+                self.$rootScope.localUserInfo.valid = true;
+                self.$http.defaults.headers.common.Authorization = self.getAuthHead(userInfo.userKey, userInfo.password);
+                deferred.resolve(userInfo);
             });
             authPromise.error(function (data) {
                 deferred.reject('用户已经被注册');

@@ -38,19 +38,18 @@ angular.module('akala.controllers', [])
     })
 
     .controller('SignupCtrl', function($scope, $state, $ionicLoading, UserSrv) {
-        var signupType = 'Phone';
 
-        $scope.signupUser = function (user) {
+        $scope.signupUser = function () {
             var userKey = '';
-            if (signupType == 'Phone') {
-                userKey = user.phone;
-            } else if (signupType == 'Email') {
-                userKey = user.email;
+            if ($scope.signupType == 'Phone') {
+                userKey = $scope.user.phone;
+            } else if ($scope.signupType == 'Email') {
+                userKey = $scope.user.email;
             }
             var userInfo = {};
             userInfo.userKey = userKey;
-            userInfo.userType = signupType;
-            userInfo.password = user.password;
+            userInfo.userType = $scope.signupType;
+            userInfo.password = $scope.user.password;
 
             $ionicLoading.show();
             UserSrv.setLocalUser(userInfo).then(UserSrv.signupUser).then(function (user) {
@@ -72,8 +71,8 @@ angular.module('akala.controllers', [])
             }
         };
 
-        $scope.changeSignupType = function(signupType) {
-            this.signupType = signupType;
-            this.user.password = '';
+        $scope.changeSignupType = function(type) {
+            $scope.signupType = type;
+            $scope.user.password = '';
         };
     });
