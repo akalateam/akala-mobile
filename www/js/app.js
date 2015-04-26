@@ -10,9 +10,9 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
             StatusBar.styleLightContent();
         }
     });
-}).run(function ($rootScope, $http, UserSrv, Router2Console) {
+}).run(function ($rootScope, $http, $window, UserSrv, Router2Console) {
     UserSrv.logonWithLocalUser();
-    Router2Console.active = true;
+    Router2Console.active = $window.akala.enableDebug;
 }).constant('$ionicLoadingConfig', {
     template: '<ion-spinner class="spinner-balanced"></ion-spinner>'
 }).config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
