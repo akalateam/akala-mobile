@@ -37,7 +37,7 @@ angular.module('akala.controllers', [])
         }
     })
 
-    .controller('SignupCtrl', function($scope, $state, $ionicLoading, $interval, UserSrv, MobileSrv) {
+    .controller('SignupCtrl', function ($scope, $state, $ionicLoading, $interval, UserSrv, MobileSrv) {
         $scope.leftSeconds = "";
 
         $scope.signupUser = function () {
@@ -68,11 +68,11 @@ angular.module('akala.controllers', [])
 
         $scope.sendMobileCredentials = function (button) {
             if (validator.isMobilePhone($scope.user.mobile, 'zh-CN')) {
-                MobileSrv.sendMobileCredentials($scope.user.mobile).then(function(credentials) {
+                MobileSrv.sendMobileCredentials($scope.user.mobile).then(function (credentials) {
                     $scope.user.mobileCredentials = credentials;
 
                     $scope.leftSeconds = 60;
-                    var signUpTimeoutFunc = function() {
+                    var signUpTimeoutFunc = function () {
                         if ($scope.leftSeconds === 0) {
                             $interval.cancel(signUpTimeout);
                             $scope.leftSeconds = '';
@@ -85,7 +85,7 @@ angular.module('akala.controllers', [])
             }
         };
 
-        $scope.changeSignupType = function(type) {
+        $scope.changeSignupType = function (type) {
             $scope.signupType = type;
             $scope.user.password = '';
             $scope.signupError = '';

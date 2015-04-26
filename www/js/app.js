@@ -10,8 +10,9 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
             StatusBar.styleLightContent();
         }
     });
-}).run(function ($rootScope, $http, UserSrv) {
+}).run(function ($rootScope, $http, UserSrv, Router2Console) {
     UserSrv.logonWithLocalUser();
+    Router2Console.active = true;
 }).constant('$ionicLoadingConfig', {
     template: '<ion-spinner class="spinner-balanced"></ion-spinner>'
 }).config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
@@ -65,7 +66,7 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
         })
 
         .state('tab.mine.signup', {
-            url:'/signup',
+            url: '/signup',
             templateUrl: 'templates/signup.html',
             controller: 'SignupCtrl'
         });

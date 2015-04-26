@@ -71,7 +71,7 @@ angular.module('akala.services', [])
             var userKeyAndType = userKey + '|' + userType;
             return 'Basic ' + btoa(userKeyAndType + ':' + password);
         };
-        self.checkUserExist = function(userKey) {
+        self.checkUserExist = function (userKey) {
             var userType = self.getUserType(userKey);
             var deferred = self.$q.defer();
             if (userType && userKey) {
@@ -93,13 +93,13 @@ angular.module('akala.services', [])
             }
             return deferred.promise;
         };
-        self.signupUser = function(userInfo) {
+        self.signupUser = function (userInfo) {
             var deferred = self.$q.defer();
             var authPromise = $http.post(akala.httpconf.url + 'ws/signupUser', {
                     userKey: userInfo.userKey,
                     userType: userInfo.userType,
                     password: userInfo.password,
-                    credentials : userInfo.mobileCredentials
+                    credentials: userInfo.mobileCredentials
                 }, {
                     transformRequest: JsonToFormData
                 }
@@ -117,18 +117,18 @@ angular.module('akala.services', [])
         };
     })
 
-    .service("MobileSrv",function($http, $q, JsonToFormData) {
+    .service("MobileSrv", function ($http, $q, JsonToFormData) {
         var self = this;
         self.$http = $http;
         self.$q = $q;
 
-        self.sendMobileCredentials = function(mobile) {
+        self.sendMobileCredentials = function (mobile) {
             var deferred = self.$q.defer();
             var authPromise = $http.post(akala.httpconf.url + 'ws/credentials',
                 {mobile: mobile}, {
                     transformRequest: JsonToFormData
                 });
-            authPromise.success(function(data){
+            authPromise.success(function (data) {
                 deferred.resolve(data);
             });
             authPromise.error(function (data) {
@@ -138,15 +138,15 @@ angular.module('akala.services', [])
         };
     })
 
-    .factory("JsonToFormData",function() {
-        var param = function(obj) {
+    .factory("JsonToFormData", function () {
+        var param = function (obj) {
             var query = '', name, value, fullSubName, subName, subValue, innerObj, i;
 
-            for(name in obj) {
+            for (name in obj) {
                 value = obj[name];
 
-                if(value instanceof Array) {
-                    for(i=0; i<value.length; ++i) {
+                if (value instanceof Array) {
+                    for (i = 0; i < value.length; ++i) {
                         subValue = value[i];
                         fullSubName = name + '[' + i + ']';
                         innerObj = {};
@@ -154,8 +154,8 @@ angular.module('akala.services', [])
                         query += param(innerObj) + '&';
                     }
                 }
-                else if(value instanceof Object) {
-                    for(subName in value) {
+                else if (value instanceof Object) {
+                    for (subName in value) {
                         subValue = value[subName];
                         fullSubName = name + '[' + subName + ']';
                         innerObj = {};
@@ -163,17 +163,62 @@ angular.module('akala.services', [])
                         query += param(innerObj) + '&';
                     }
                 }
-                else if(value !== undefined && value !== null)
+                else if (value !== undefined && value !== null)
                     query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
             }
 
             return query.length ? query.substr(0, query.length - 1) : query;
         };
-        function transformRequest( data, getHeaders ) {
+
+        function transformRequest(data, getHeaders) {
             var headers = getHeaders();
             headers["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8";
             return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
         }
-        return( transformRequest );
-    });
-;
+
+        return ( transformRequest );
+    })
+
+    .factory("Router2Console", ["$rootScope", function ($rootScope) {
+        var handler = {active: false};
+        handler.toggle = function () {
+            handler.active = !handler.active;
+        };
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            if (handler.active) {
+                console.log("$stateChangeStart --- event, toState, toParams, fromState, fromParams");
+                console.log(arguments);
+            }
+        });
+        $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+            if (handler.active) {
+                console.log("$stateChangeError --- event, toState, toParams, fromState, fromParams, error");
+                console.log(arguments);
+            }
+        });
+        $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+            if (handler.active) {
+                console.log("$stateChangeSuccess --- event, toState, toParams, fromState, fromParams");
+                console.log(arguments);
+            }
+        });
+        $rootScope.$on('$viewContentLoading', function (event, viewConfig) {
+            if (handler.active) {
+                console.log("$viewContentLoading --- event, viewConfig");
+                console.log(arguments);
+            }
+        });
+        $rootScope.$on('$viewContentLoaded', function (event) {
+            if (handler.active) {
+                console.log("$viewContentLoaded --- event");
+                console.log(arguments);
+            }
+        });
+        $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
+            if (handler.active) {
+                console.log("$stateNotFound --- event, unfoundState, fromState, fromParams");
+                console.log(arguments);
+            }
+        });
+        return handler;
+    }]);
