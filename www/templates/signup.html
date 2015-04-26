@@ -19,86 +19,103 @@
                 </tr>
             </table>
         </div>
-        <form name="phone_form" ng-show="signupType != 'Email'" ng-submit="signupUser()" novalidate>
+        <form name="mobile_form" ng-show="signupType != 'Email'" ng-submit="signupUser()" novalidate>
             <div class="list padding">
-                <label class="item item-input">
-                    <i class="icon placeholder-icon ion-android-phone-portrait"></i>
-                    <input type="text" name="phone" ng-model="user.phone" placeholder="输入手机号码" akala-phone akala-unique
-                           required>
-                    <i class="icon placeholder-icon ion-checkmark-round balanced"
-                       ng-show="phone_form.phone.$touched && !(phone_form.phone.$error.required||phone_form.phone.$error.phone || phone_form.phone.$error.unique)"
-                       style="position: relative; left: -15px;"></i>
-                    <i class="icon placeholder-icon ion-close-round assertive"
-                       ng-show="phone_form.phone.$touched && (phone_form.phone.$error.required||phone_form.phone.$error.phone || phone_form.phone.$error.unique)"
-                       style="position: relative; left: -15px;"></i>
-                    <button ng-show="!(phone_form.phone.$error.required||phone_form.phone.$error.phone || phone_form.phone.$error.unique)" class="button button-small button-calm"
-                            ng-click="sendPhoneKey()">获取验证码
+                <div class="bar bar-header item-input-inset">
+                    <label class="item-input-wrapper">
+                        <i class="icon placeholder-icon ion-android-phone-portrait"></i>
+                        <input type="text" name="mobile" ng-model="user.mobile" placeholder="输入手机号码" akala-mobile
+                               akala-unique
+                               required>
+                        <i class="icon placeholder-icon ion-checkmark-round balanced"
+                           ng-show="mobile_form.mobile.$touched && !(mobile_form.mobile.$error.required||mobile_form.mobile.$error.mobile || mobile_form.mobile.$error.unique)"
+                           style="position: relative; left: -15px;"></i>
+                        <i class="icon placeholder-icon ion-close-round assertive"
+                           ng-show="mobile_form.mobile.$touched && (mobile_form.mobile.$error.required||mobile_form.mobile.$error.mobile || mobile_form.mobile.$error.unique)"
+                           style="position: relative; left: -15px;"></i>
+                    </label>
+                    <button type="button" ng-click="sendMobileCredentials()"
+                            ng-show="!(mobile_form.mobile.$error.required||mobile_form.mobile.$error.mobile || mobile_form.mobile.$error.unique)"  ng-disabled="leftSeconds != ''"
+                            class="button button-small button-calm">获取验证码 {{leftSeconds}}
                     </button>
-                </label>
-                <label class="item item-input">
-                    <i class="icon placeholder-icon ion-android-attach"></i>
-                    <input type="text" name="identityCode" ng-model="user.identityCode" placeholder="输入短信验证码" required>
-                    <i class="icon placeholder-icon ion-checkmark-round balanced"
-                       ng-show="phone_form.identityCode.$touched && !phone_form.identityCode.$error.required"
-                       style="position: relative; left: -15px;"></i>
-                    <i class="icon placeholder-icon ion-close-round assertive"
-                       ng-show="phone_form.identityCode.$touched && phone_form.identityCode.$error.required"
-                       style="position: relative; left: -15px;"></i>
-                </label>
-                <label class="item item-input">
-                    <i class="icon placeholder-icon ion-android-lock"></i>
-                    <input type="password" name="password" ng-model="user.password" ng-minlength="6"
-                           placeholder="输入六位以上密码" required>
-                    <i class="icon placeholder-icon ion-checkmark-round balanced"
-                       ng-show="phone_form.password.$touched && !(phone_form.password.$error.required || phone_form.password.$error.minlength)"
-                       style="position: relative; left: -15px;"></i>
-                    <i class="icon placeholder-icon ion-close-round assertive"
-                       ng-show="phone_form.password.$touched && (phone_form.password.$error.required || phone_form.password.$error.minlength)"
-                       style="position: relative; left: -15px;"></i>
-                </label>
+                </div>
+                <div class="bar bar-header item-input-inset">
+                    <label class="item-input-wrapper">
+                        <i class="icon placeholder-icon ion-android-attach"></i>
+                        <input type="text" name="mobileCredentials" ng-model="user.mobileCredentials" placeholder="输入短信验证码"
+                               required>
+                        <i class="icon placeholder-icon ion-checkmark-round balanced"
+                           ng-show="mobile_form.mobileCredentials.$touched && !mobile_form.mobileCredentials.$error.required"
+                           style="position: relative; left: -15px;"></i>
+                        <i class="icon placeholder-icon ion-close-round assertive"
+                           ng-show="mobile_form.mobileCredentials.$touched && mobile_form.mobileCredentials.$error.required"
+                           style="position: relative; left: -15px;"></i>
+                    </label>
+                </div>
+                <div class="bar bar-header item-input-inset">
+                    <label class="item-input-wrapper">
+                        <i class="icon placeholder-icon ion-android-lock"></i>
+                        <input type="password" name="password" ng-model="user.password" ng-minlength="6"
+                               placeholder="输入六位以上密码" required>
+                        <i class="icon placeholder-icon ion-checkmark-round balanced"
+                           ng-show="mobile_form.password.$touched && !(mobile_form.password.$error.required || mobile_form.password.$error.minlength)"
+                           style="position: relative; left: -15px;"></i>
+                        <i class="icon placeholder-icon ion-close-round assertive"
+                           ng-show="mobile_form.password.$touched && (mobile_form.password.$error.required || mobile_form.password.$error.minlength)"
+                           style="position: relative; left: -15px;"></i>
+                    </label>
+                </div>
             </div>
-            <div ng-show="phone_form.phone.$error.required||phone_form.phone.$error.phone" class="assertive"
+            <div ng-show="mobile_form.mobile.$error.required||mobile_form.mobile.$error.mobile" class="assertive"
                  style="font-size: 12px;line-height: 20px;margin-top:5px">请输入正确的手机号码
             </div>
-            <div ng-show="phone_form.phone.$error.unique" class="assertive"
+            <div ng-show="mobile_form.mobile.$error.unique" class="assertive"
                  style="font-size: 12px;line-height: 20px;margin-top:5px">手机号码已经被注册使用
             </div>
-            <div ng-show="phone_form.identityCode.$error.required" class="assertive"
+            <div ng-show="mobile_form.mobileCredentials.$error.required" class="assertive"
                  style="font-size: 12px;line-height: 20px;margin-top:5px">请输入手机验证码
             </div>
-            <div ng-show="phone_form.password.$error.required || phone_form.password.$error.minlength" class="assertive"
+            <div ng-show="mobile_form.password.$error.required || mobile_form.password.$error.minlength"
+                 class="assertive"
                  style="font-size: 12px;line-height: 20px;margin-top:5px">请输入六位以上密码
             </div>
+            <div class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">{{signupError}}
+            </div>
             <div class="padding">
-                <button type="submit" ng-disabled="phone_form.$invalid" class="button button-block button-balanced">注册
+                <button type="submit" ng-disabled="mobile_form.$invalid" class="button button-block button-balanced">
+                    注册
                 </button>
             </div>
         </form>
 
         <form name="email_form" ng-show="signupType == 'Email'" ng-submit="signupUser()" novalidate>
             <div class="list padding">
-                <label class="item item-input">
-                    <i class="icon placeholder-icon ion-android-mail"></i>
-                    <input type="email" name="email" ng-model="user.email" placeholder="请输入邮箱" akala-unique required>
-                    <i class="icon placeholder-icon ion-checkmark-round balanced"
-                       ng-show="email_form.email.$touched && !(email_form.email.$error.email || email_form.email.$error.unique || email_form.email.$error.required)"
-                       style="position: relative; left: -15px;"></i>
-                    <i class="icon placeholder-icon ion-close-round assertive"
-                       ng-show="email_form.email.$touched && (email_form.email.$error.email || email_form.email.$error.unique || email_form.email.$error.required)"
-                       style="position: relative; left: -15px;"></i>
-                </label>
-                <label class="item item-input">
-                    <i class="icon placeholder-icon ion-android-lock"></i>
-                    <input type="password" name="password" ng-model="user.password" ng-minlength="6"
-                           placeholder="输入六位以上密码" required>
+                <div class="bar bar-header item-input-inset">
+                    <label class="item-input-wrapper">
+                        <i class="icon placeholder-icon ion-android-mail"></i>
+                        <input type="email" name="email" ng-model="user.email" placeholder="请输入邮箱" akala-unique required>
+                        <i class="icon placeholder-icon ion-checkmark-round balanced"
+                           ng-show="email_form.email.$touched && !(email_form.email.$error.email || email_form.email.$error.unique || email_form.email.$error.required)"
+                           style="position: relative; left: -15px;"></i>
+                        <i class="icon placeholder-icon ion-close-round assertive"
+                           ng-show="email_form.email.$touched && (email_form.email.$error.email || email_form.email.$error.unique || email_form.email.$error.required)"
+                           style="position: relative; left: -15px;"></i>
+                    </label>
+                </div>
+                <div class="bar bar-header item-input-inset">
+                    <label class="item-input-wrapper">
+                        <i class="icon placeholder-icon ion-android-lock"></i>
+                        <input type="password" name="password" ng-model="user.password" ng-minlength="6"
+                               placeholder="输入六位以上密码" required>
 
-                    <i class="icon placeholder-icon ion-checkmark-round balanced"
-                       ng-show="email_form.password.$touched && !(email_form.password.$error.required || email_form.password.$error.minlength)"
-                       style="position: relative; left: -15px;"></i>
-                    <i class="icon placeholder-icon ion-close-round assertive"
-                       ng-show="email_form.password.$touched && (email_form.password.$error.required || email_form.password.$error.minlength)"
-                       style="position: relative; left: -15px;"></i>
-                </label>
+                        <i class="icon placeholder-icon ion-checkmark-round balanced"
+                           ng-show="email_form.password.$touched && !(email_form.password.$error.required || email_form.password.$error.minlength)"
+                           style="position: relative; left: -15px;"></i>
+                        <i class="icon placeholder-icon ion-close-round assertive"
+                           ng-show="email_form.password.$touched && (email_form.password.$error.required || email_form.password.$error.minlength)"
+                           style="position: relative; left: -15px;"></i>
+                    </label>
+                </div>
             </div>
             <div ng-show="email_form.email.$error.email||email_form.email.$error.required" class="assertive"
                  style="font-size: 12px;line-height: 20px;margin-top:5px">请输入正确的邮箱地址
@@ -109,11 +126,11 @@
             <div ng-show="email_form.password.$error.required || email_form.password.$error.minlength" class="assertive"
                  style="font-size: 12px;line-height: 20px;margin-top:5px">请输入六位以上密码
             </div>
+            <div class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">{{signupError}}
+            </div>
             <div class="padding">
                 <button type="submit" ng-disabled="email_form.$invalid" class="button button-block button-balanced">注册
                 </button>
-            </div>
-            <div class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">{{signupError}}
             </div>
         </form>
 

@@ -37,12 +37,14 @@ angular.module('akala.controllers', [])
         }
     })
 
-    .controller('SignupCtrl', function($scope, $state, $ionicLoading, UserSrv) {
+    .controller('SignupCtrl', function($scope, $state, $ionicLoading, $interval, UserSrv, MobileSrv) {
+        $scope.leftSeconds = "";
 
         $scope.signupUser = function () {
             var userKey = '';
-            if ($scope.signupType == 'Phone') {
-                userKey = $scope.user.phone;
+            if ($scope.signupType != 'Email') {
+                userKey = $scope.user.mobile;
+                $scope.signupType = 'Phone';
             } else if ($scope.signupType == 'Email') {
                 userKey = $scope.user.email;
             }
@@ -50,6 +52,7 @@ angular.module('akala.controllers', [])
             userInfo.userKey = userKey;
             userInfo.userType = $scope.signupType;
             userInfo.password = $scope.user.password;
+            userInfo.mobileCredentials = $scope.user.mobileCredentials;
 
             $ionicLoading.show();
             UserSrv.setLocalUser(userInfo).then(UserSrv.signupUser).then(function (user) {
@@ -63,16 +66,28 @@ angular.module('akala.controllers', [])
             });
         };
 
-        $scope.sendPhoneKey = function () {
-            if (!validator.isMobilePhone(user.name, 'zh-CN')) {
-                this.$error("手机号码格式不正确");
-            } else {
-                return registerService.getPhoneIndentificationCode();
+        $scope.sendMobileCredentials = function (button) {
+            if (validator.isMobilePhone($scope.user.mobile, 'zh-CN')) {
+                MobileSrv.sendMobileCredentials($scope.user.mobile).then(function(credentials) {
+                    $scope.user.mobileCredentials = credentials;
+
+                    $scope.leftSeconds = 60;
+                    var signUpTimeoutFunc = function() {
+                        if ($scope.leftSeconds === 0) {
+                            $interval.cancel(signUpTimeout);
+                            $scope.leftSeconds = '';
+                            return;
+                        }
+                        $scope.leftSeconds--;
+                    };
+                    var signUpTimeout = $interval(signUpTimeoutFunc, 1000);
+                })
             }
         };
 
         $scope.changeSignupType = function(type) {
             $scope.signupType = type;
             $scope.user.password = '';
+            $scope.signupError = '';
         };
     });

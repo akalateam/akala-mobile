@@ -19,16 +19,16 @@ angular.module('akala.directives', [])
         };
     }])
 
-    .directive('akalaPhone', function () {
+    .directive('akalaMobile', function () {
         return {
             restrict : 'A',
             require: 'ngModel',
             link: function (scope, element, attrs, controller) {
                 scope.$watch(attrs.ngModel, function () {
                     if(validator.isMobilePhone(element.val(), 'zh-CN')) {
-                        controller.$setValidity('phone', true);
+                        controller.$setValidity('mobile', true);
                     } else {
-                        controller.$setValidity('phone', false);
+                        controller.$setValidity('mobile', false);
                     }
                 });
             }
