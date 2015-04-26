@@ -65,6 +65,12 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
             controller: 'LoginCtrl'
         })
 
+        .state('tab.mine.resetpwd', {
+            url: "/resetpwd",
+            templateUrl: 'templates/resetpwd.html',
+            controller: 'ResetpwdCtrl'
+        })
+
         .state('tab.mine.signup', {
             url: '/signup',
             templateUrl: 'templates/signup.html',

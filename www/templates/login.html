@@ -4,7 +4,7 @@
             <ion-list>
                 <label class="item item-input">
                     <i class="icon placeholder-icon ion-android-person"></i>
-                    <input type="text" name="userKey" ng-model="user.userKey" placeholder="电话/邮箱" akala-user-key/>
+                    <input type="text" name="userKey" ng-model="user.userKey" placeholder="手机/邮箱" akala-user-key/>
                     <i class="icon placeholder-icon ion-checkmark-round balanced" ng-show="loginForm.userKey.$valid"
                        style="position: relative; left: -15px;"></i>
                     <i class="icon placeholder-icon ion-close-round assertive"
@@ -25,16 +25,19 @@
                 </label>
 
                 <div ng-show="(loginForm.$submitted || loginForm.userKey.$touched) && !loginForm.userKey.$valid"
-                     class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">请输入正确电话/邮箱
+                     class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">请输入正确手机/邮箱
                 </div>
                 <div ng-show="(loginForm.$submitted || loginForm.password.$touched) && (loginForm.password.$error.minlength || loginForm.password.$error.required)"
                      class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">请输入六位以上密码
                 </div>
                 <div class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">{{loginError}}</div>
             </ion-list>
-            <button href="#/forgetpwd" class="button button-calm button-clear button-small" style="padding-left: 0px;">
-                忘记密码
-            </button>
+            <a href="#/tab/mine/resetpwd">
+                <button name="resetpwdBtn" class="button button-calm button-clear button-small"
+                        style="padding-left: 0px;">
+                    忘记密码
+                </button>
+            </a>
             <button name="loginBtn" class="button button-balanced button-block" ng-disabled="loginForm.$invalid"
                     ng-click="signIn(user)">登陆
             </button>

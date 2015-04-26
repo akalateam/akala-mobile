@@ -92,4 +92,24 @@ angular.module('akala.controllers', [])
                 $scope.user.password = '';
             }
         };
+    })
+
+    .controller('ResetpwdCtrl', function ($scope, $ionicLoading, UserSrv) {
+        $scope.resetpwd = function (userKey) {
+            if (!userKey) {
+                return;
+            }
+
+            $scope.resetpwdInfo = '';
+            $scope.resetpwdError = '';
+
+            $ionicLoading.show();
+            UserSrv.resetpwd(userKey).then(function (data) {
+                $scope.resetpwdInfo = data;
+                $ionicLoading.hide();
+            }).catch(function (error) {
+                $scope.resetpwdError = error;
+                $ionicLoading.hide();
+            });
+        }
     });

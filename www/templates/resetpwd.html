@@ -1,0 +1,23 @@
+<ion-view view-title="重置密码">
+    <ion-content padding="true" class="has-header" ng-controller="ResetpwdCtrl">
+        <form name="resetpwdForm" novalidate>
+            <ion-list>
+                <label class="item item-input">
+                    <i class="icon placeholder-icon ion-android-person"></i>
+                    <input type="text" name="userKey" ng-model="userKey" placeholder="手机/邮箱" akala-user-key/>
+                    <i class="icon placeholder-icon ion-checkmark-round balanced" ng-show="resetpwdForm.userKey.$valid"
+                       style="position: relative; left: -15px;"></i>
+                    <i class="icon placeholder-icon ion-close-round assertive"
+                       ng-show="(resetpwdForm.$submitted || resetpwdForm.userKey.$touched) && !resetpwdForm.userKey.$valid"
+                       style="position: relative; left: -15px;"></i>
+                </label>
+
+                <div class="balanced" style="font-size: 12px;line-height: 20px;margin-top:5px">{{resetpwdInfo}}</div>
+                <div class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">{{resetpwdError}}</div>
+            </ion-list>
+            <button name="loginBtn" class="button button-balanced button-block" ng-disabled="resetpwdForm.$invalid"
+                    ng-click="resetpwd(userKey)">重置密码
+            </button>
+        </form>
+    </ion-content>
+</ion-view>

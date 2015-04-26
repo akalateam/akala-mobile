@@ -2,7 +2,7 @@
  * Created by Shane on 2015/4/18.
  */
 angular.module('akala.services', [])
-    .service('UserSrv', function ($http, $q, $rootScope, JsonToFormData) {
+    .service('UserSrv', function ($http, $q, $rootScope, $filter, JsonToFormData) {
         var self = this;
         self.$http = $http;
         self.$q = $q;
@@ -115,6 +115,39 @@ angular.module('akala.services', [])
             });
             return deferred.promise;
         };
+
+        self.resetpwd = function (userKey) {
+            var userType = self.getUserType(userKey);
+            var deferred = self.$q.defer();
+            self.checkUserExist(userKey).then(function (data) {
+                    if (data) {
+                        var authPromise = $http.post(akala.httpconf.url + 'ws/resetPwd', {
+                                userKey: userKey,
+                                userType: userType
+                            }, {
+                                transformRequest: JsonToFormData
+                            }
+                        );
+                        authPromise.success(function (data) {
+                            if (data) {
+                                deferred.resolve('新密码已发送至' + $filter('translate')(userType) + userKey);
+                            } else {
+                                deferred.reject("此用户不存在");
+                            }
+                        });
+                        authPromise.error(function (data) {
+                            deferred.reject("连接失败，请重试");
+                        });
+                    } else {
+                        deferred.reject("此用户不存在");
+                    }
+                }
+            ).catch(function () {
+                    deferred.reject("连接失败，请重试");
+                });
+
+            return deferred.promise;
+        }
     })
 
     .service("MobileSrv", function ($http, $q, JsonToFormData) {
