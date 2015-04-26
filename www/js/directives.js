@@ -35,7 +35,7 @@ angular.module('akala.directives', [])
         };
     })
 
-    .directive('userKey', function () {
+    .directive('akalaUserKey', function () {
         return {
             restrict: 'A',
             require: 'ngModel',
