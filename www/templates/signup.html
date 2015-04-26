@@ -27,7 +27,9 @@
                        ng-show="!(mobileForm.mobile.$error.required || mobileForm.mobile.$error.mobile || mobileForm.mobile.$error.unique)"
                        style="position: relative; left: -15px;"></i>
                     <i class="icon placeholder-icon ion-close-round assertive"
-                       ng-show="(mobileForm.$submitted || mobileForm.mobile.$touched) && (mobileForm.mobile.$error.required || mobileForm.mobile.$error.mobile || mobileForm.mobile.$error.unique)"
+                       ng-show="(mobileForm.$submitted || mobileForm.mobile.$touched) && (mobileForm.mobile.$error.required || mobileForm.mobile.$error.mobile)"
+                       style="position: relative; left: -15px;"></i>
+                    <i class="icon placeholder-icon ion-close-round assertive" ng-show="mobileForm.mobile.$error.unique"
                        style="position: relative; left: -15px;"></i>
                 </label>
 
@@ -65,10 +67,10 @@
                        style="position: relative; left: -15px;"></i>
                 </label>
 
-                <div ng-show="(mobileForm.$submitted || mobileForm.mobile.$touched) && (mobileForm.mobile.$error.required || mobileForm.mobile.$error.mobile || mobileForm.mobile.$error.unique)"
+                <div ng-show="(mobileForm.$submitted || mobileForm.mobile.$touched) && (mobileForm.mobile.$error.required || mobileForm.mobile.$error.mobile)"
                      class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">请输入正确的手机号码
                 </div>
-                <div ng-show="(mobileForm.$submitted || mobileForm.mobile.$touched) && mobileForm.mobile.$error.unique"
+                <div ng-show="mobileForm.mobile.$error.unique"
                      class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">手机号码已经被注册使用
                 </div>
                 <div ng-show="(mobileForm.$submitted || mobileForm.mobileCredentials.$touched) && mobileForm.mobileCredentials.$error.required"
@@ -92,7 +94,9 @@
                        ng-show="!(emailForm.email.$error.email || emailForm.email.$error.unique || emailForm.email.$error.required)"
                        style="position: relative; left: -15px;"></i>
                     <i class="icon placeholder-icon ion-close-round assertive"
-                       ng-show="(emailForm.$submitted || emailForm.email.$touched) && (emailForm.email.$error.email || emailForm.email.$error.unique || emailForm.email.$error.required)"
+                       ng-show="(emailForm.$submitted || emailForm.email.$touched) && (emailForm.email.$error.email || emailForm.email.$error.required)"
+                       style="position: relative; left: -15px;"></i>
+                    <i class="icon placeholder-icon ion-close-round assertive" ng-show="emailForm.email.$error.unique"
                        style="position: relative; left: -15px;"></i>
                 </label>
 
@@ -111,7 +115,7 @@
                 <div ng-show="(emailForm.$submitted || emailForm.email.$touched) && (emailForm.email.$error.email||emailForm.email.$error.required)"
                      class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">请输入正确的邮箱地址
                 </div>
-                <div ng-show="(emailForm.$submitted || emailForm.email.$touched) && (emailForm.email.$error.unique)"
+                <div ng-show="emailForm.email.$error.unique"
                      class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">邮箱已经被注册使用
                 </div>
                 <div ng-show="(emailForm.$submitted || emailForm.email.$touched) && (emailForm.password.$error.required || emailForm.password.$error.minlength)"
