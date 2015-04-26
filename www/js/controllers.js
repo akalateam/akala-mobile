@@ -87,7 +87,9 @@ angular.module('akala.controllers', [])
 
         $scope.changeSignupType = function (type) {
             $scope.signupType = type;
-            $scope.user.password = '';
             $scope.signupError = '';
+            if ($scope.user) {
+                $scope.user.password = '';
+            }
         };
     });
