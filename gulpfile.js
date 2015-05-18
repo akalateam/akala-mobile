@@ -8,8 +8,8 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 var uglify = require('gulp-uglify');
-var runSequence = require('gulp-run-sequence');
-var rimraf = require('gulp-rimraf');
+var runSequence = require('run-sequence');
+var del = require('del');
 var csso = require('gulp-csso');
 
 var paths = {
@@ -84,9 +84,7 @@ gulp.task('mincss', function (done) {
 });
 
 gulp.task('cleanlib', function (done) {
-    gulp.src(['./www/lib/*.*'])
-        .pipe(rimraf())
-        .on('end', done);
+    del(['./www/lib/*.*'], done);
 });
 
 gulp.task('config_dev', function (done) {
