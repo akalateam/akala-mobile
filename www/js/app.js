@@ -18,6 +18,7 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
 }).config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $ionicConfigProvider.tabs.position('bottom');
     $ionicConfigProvider.tabs.style('standard');
+    //$ionicConfigProvider.views.maxCache(0);
 
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
@@ -75,6 +76,24 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
             url: '/signup',
             templateUrl: 'templates/signup.html',
             controller: 'SignupCtrl'
+        })
+
+        .state('tab.mine.address', {
+            url: '/address',
+            templateUrl: 'templates/address.html',
+            controller: 'AddressDetailCtrl'
+        })
+
+        .state('tab.mine.address-detail', {
+            url: '/address-detail/:pageType',
+            templateUrl: 'templates/address-detail.html',
+            controller: 'AddressNewAmendCtrl'
+        })
+
+        .state('tab.mine.address-map', {
+            url: '/address-map',
+            templateUrl: 'templates/address-map.html',
+            controller: 'AddressMapCtrl'
         });
 
     // if none of the above states are matched, use this as the fallback

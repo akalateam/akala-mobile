@@ -212,6 +212,20 @@ angular.module('akala.services', [])
         return ( transformRequest );
     })
 
+    .service("AddressSrv", function () {
+        var self = this;
+
+        self.initNewAddress = function () {
+            self.currentAddress = {
+                name: '',
+                gender: 'M',
+                location: {},
+                detailLocation: '',
+                mobile: ''
+            }
+        }
+    })
+
     .factory("Router2Console", ["$rootScope", function ($rootScope) {
         var handler = {active: false};
         handler.toggle = function () {

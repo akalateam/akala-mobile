@@ -1,0 +1,51 @@
+<ion-view view-title="{{title}}">
+    <ion-nav-buttons side="right">
+        <a class="button button-outline ion-checkmark-round button-light"
+           style="color:white; border-color:#ffffff;">保存</a>
+    </ion-nav-buttons>
+
+    <ion-content padding="true" class="has-header">
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">联系人</span>
+                <input type="text" placeholder="您的姓名" ng-model="addrInfo.name">
+            </label>
+            <span class="item item-input">
+                <span class="input-label"></span>
+                <a class="button button-clear button-dark" style="font-size: 14px;padding: 0px; margin: -5px -1px;"
+                   ng-click="addrInfo.gender = 'M'">
+                    <i class="icon ion-android-checkbox-outline assertive" style="padding: 0px;"
+                       ng-show="addrInfo.gender=='M'"></i>
+                    <i class="icon ion-android-checkbox-outline-blank" style="padding: 0px;"
+                       ng-show="addrInfo.gender=='F'"></i>
+                    先生
+                </a>
+                <a class="button button-clear button-dark"
+                   style="font-size: 14px;padding: 0px; margin: -5px 0px -5px 10px;" ng-click="addrInfo.gender = 'F'">
+                    <i class="icon ion-android-checkbox-outline assertive" style="padding: 0px;"
+                       ng-show="addrInfo.gender=='F'"></i>
+                    <i class="icon ion-android-checkbox-outline-blank" style="padding: 0px;"
+                       ng-show="addrInfo.gender=='M'"></i>
+                    女士
+                </a>
+            </span>
+            <span class="item item-input">
+                <span class="input-label">收餐地址</span>
+                <a class="button button-clear" style="font-size: 14px;padding: 0px; margin: -5px -1px;"
+                   ui-sref="tab.mine.address-map">
+                    <i class="icon ion-ios-location-outline button-clear" style="padding: 0px;"></i>
+                    请选择小区、大厦或学校
+                    <i class="icon ion-chevron-right button-clear"></i>
+                </a>
+            </span>
+            <label class="item item-input">
+                <span class="input-label">门牌号</span>
+                <input type="text" placeholder="请输入门牌号等详细信息" ng-model="addrInfo.detailLocation">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">手机</span>
+                <input type="text" placeholder="配送人员联系您的方式" ng-model="addrInfo.mobile">
+            </label>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,40 @@
+<ion-view>
+    <ion-nav-title>
+        <div class="bar item-input-inset">
+            <label class="item-input-wrapper">
+                <i class="icon ion-ios-search placeholder-icon"></i>
+                <input type="search" placeholder="请输入您的送餐地址" ng-model="$parent.keywords" ng-keyup="autoComplete($event)"
+                       ng-model-options="{ updateOn: 'keyup blur' }" ng-focus="$parent.keywordsfocus=true"
+                       ng-blur="$parent.keywordsfocus=false">
+            </label>
+        </div>
+    </ion-nav-title>
+
+    <ion-content padding="true" class="has-header full-height-content">
+        <div class="list" ng-show="keywords && searchResults.length && keywordsfocus"
+             style="position: absolute;top: 0px;left: 31px;right: 31px;z-index: 999;padding: 0px 10.67px;margin: 0px 10px;">
+            <li class="item" ng-class="{'item-high-light': select}" ng-mouseenter="select=true"
+                ng-mouseleave="select=false"
+                style="padding: 5px 10px;font-size: 1em;" ng-repeat="result in searchResults"
+                ng-click="selectLocation(result.id)">
+                {{result.name}}
+                <div style="color: #C1C1C1;font-size: 0.5em;">{{result.district}}</div>
+            </li>
+        </div>
+        <div id="mapContainer" style="height: 50%;">
+            <a class="button button-clear icon ion-pinpoint button-light"
+               style="color: black;position: absolute;bottom: 10px;left: 0px;z-index: 99"
+               ng-click="toolBar.doLocation()"></a>
+        </div>
+        <ion-scroll style="height: 50%;">
+            <div class="list">
+                <li class="item" ng-class="{'item-high-light': select}" ng-mouseenter="select=true"
+                    ng-mouseleave="select=false"
+                    style="padding: 5px 0px;font-size: 1em;" ng-repeat="point in nearbyPoints"
+                    ng-click="selectLocation(point.id)">
+                    {{point.name}}
+                </li>
+            </div>
+        </ion-scroll>
+    </ion-content>
+</ion-view>
