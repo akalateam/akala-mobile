@@ -39,7 +39,7 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
             url: '/shop',
             views: {
                 'tab-shop': {
-                    templateUrl: 'templates/tab-shop.html',
+                    templateUrl: 'templates/shop/tab-shop.html',
                     controller: 'ShopCtrl'
                 }
             }
@@ -49,51 +49,70 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
             url: '/mine',
             views: {
                 'tab-mine': {
-                    templateUrl: 'templates/tab-mine.html'
+                    templateUrl: 'templates/mine/tab-mine.html',
+                    controller: 'MineCtrl'
                 }
             }
         })
 
-        .state('tab.mine.summary', {
-            url: "/summary",
-            templateUrl: 'templates/mine-summary.html',
-            controller: 'MineSummaryCtrl'
-        })
-
-        .state('tab.mine.login', {
+        .state('tab.login', {
             url: "/login",
-            templateUrl: 'templates/login.html',
-            controller: 'LoginCtrl'
+            views: {
+                'tab-mine': {
+                    templateUrl: 'templates/mine/login.html',
+                    controller: 'LoginCtrl'
+                }
+            }
         })
 
-        .state('tab.mine.resetpwd', {
+        .state('tab.resetpwd', {
             url: "/resetpwd",
-            templateUrl: 'templates/resetpwd.html',
-            controller: 'ResetpwdCtrl'
+            views: {
+                'tab-mine': {
+                    templateUrl: 'templates/mine/resetpwd.html',
+                    controller: 'ResetpwdCtrl'
+                }
+            }
         })
 
-        .state('tab.mine.signup', {
+        .state('tab.signup', {
             url: '/signup',
-            templateUrl: 'templates/signup.html',
-            controller: 'SignupCtrl'
+            views: {
+                'tab-mine': {
+                    templateUrl: 'templates/mine/signup.html',
+                    controller: 'SignupCtrl'
+                }
+            }
         })
 
-        .state('tab.mine.address', {
+        .state('tab.address', {
             url: '/address',
-            templateUrl: 'templates/address.html',
-            controller: 'AddressDetailCtrl'
+            views: {
+                'tab-mine': {
+                    templateUrl: 'templates/mine/address.html',
+                    controller: 'AddressDetailCtrl'
+                }
+            }
         })
 
-        .state('tab.mine.address-detail', {
+        .state('tab.address-detail', {
             url: '/address-detail/:pageType',
-            templateUrl: 'templates/address-detail.html',
-            controller: 'AddressNewAmendCtrl'
+            views: {
+                'tab-mine': {
+                    templateUrl: 'templates/mine/address-detail.html',
+                    controller: 'AddressNewAmendCtrl'
+                }
+            }
         })
 
-        .state('tab.mine.address-map', {
+        .state('tab.address-map', {
             url: '/address-map',
-            templateUrl: 'templates/address-map.html',
-            controller: 'AddressMapCtrl'
+            views: {
+                'tab-mine': {
+                    templateUrl: 'templates/mine/address-map.html',
+                    controller: 'AddressMapCtrl'
+                }
+            }
         });
 
     // if none of the above states are matched, use this as the fallback

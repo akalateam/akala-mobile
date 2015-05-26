@@ -5,7 +5,7 @@ angular.module('akala.controllers', [])
     .controller('ShopCtrl', function ($scope) {
     })
 
-    .controller('MineSummaryCtrl', function ($scope, $rootScope, UserSrv) {
+    .controller('MineCtrl', function ($scope, $rootScope, UserSrv) {
         $scope.logout = function () {
             UserSrv.removeLocalUser();
             delete $rootScope.localUserInfo;
@@ -26,7 +26,7 @@ angular.module('akala.controllers', [])
 
             $ionicLoading.show();
             UserSrv.setLocalUser(userInfo).then(UserSrv.logonWithLocalUser).then(function (user) {
-                $state.go('tab.mine.summary');
+                $state.go('tab.mine');
                 $ionicLoading.hide();
             }).catch(function (error) {
                 $scope.$apply(function (error) {
@@ -56,7 +56,7 @@ angular.module('akala.controllers', [])
 
             $ionicLoading.show();
             UserSrv.setLocalUser(userInfo).then(UserSrv.signupUser).then(function (user) {
-                $state.go('tab.mine.summary');
+                $state.go('tab.mine');
                 $ionicLoading.hide();
             }).catch(function (error) {
                 $scope.$apply(function (error) {
@@ -243,7 +243,7 @@ angular.module('akala.controllers', [])
                             AddressSrv.currentAddress.location.lng = addrInfo.location.lng;
                             AddressSrv.currentAddress.location.lat = addrInfo.location.lat;
 
-                            $state.go('tab.mine.address-detail', {pageType: 'N'});
+                            $state.go('tab.address-detail', {pageType: 'N'});
                         }
                     }
                 });

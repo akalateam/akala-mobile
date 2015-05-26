@@ -1,5 +1,5 @@
 <ion-view view-title="用户登陆">
-    <ion-content padding="true" class="has-header" ng-controller="LoginCtrl">
+    <ion-content padding="true" class="has-header">
         <form name="loginForm" novalidate>
             <ion-list>
                 <label class="item item-input">
@@ -32,7 +32,7 @@
                 </div>
                 <div class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">{{loginError}}</div>
             </ion-list>
-            <a href="#/tab/mine/resetpwd">
+            <a href="#/tab/resetpwd">
                 <button name="resetpwdBtn" class="button button-calm button-clear button-small"
                         style="padding-left: 0px;">
                     忘记密码
@@ -44,7 +44,7 @@
         </form>
         <div>
             <span style="font-size: 12px;line-height: 26px;vertical-align: middle;">没有账号？</span>
-            <a href="#/tab/mine/signup">
+            <a href="#/tab/signup">
                 <button class="button button-calm button-clear button-small"
                         style="vertical-align: middle;">免费注册
                 </button>
