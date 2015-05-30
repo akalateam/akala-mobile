@@ -171,6 +171,52 @@ angular.module('akala.services', [])
         };
     })
 
+    .service("AddressSrv", function ($rootScope, $http, $q, JsonToFormData) {
+        var self = this;
+
+        self.initNewAddress = function () {
+            self.currentAddress = {
+                id: '',
+                name: '',
+                gender: 'M',
+                location: {},
+                detailLocation: '',
+                mobile: ''
+            }
+        };
+
+        self.validateAddress = function () {
+            if (!self.currentAddress.name) {
+                return '联系人不能为空';
+            } else if (!self.currentAddress.location.name) {
+                return '地址不能为空';
+            } else if (!self.currentAddress.mobile) {
+                return '手机号不能为空';
+            } else if (!validator.isMobilePhone(self.currentAddress.mobile, 'zh-CN')) {
+                return '请输入正确手机号';
+            } else {
+                return true;
+            }
+        };
+
+        self.saveAddress = function () {
+            var deferred = $q.defer();
+            var promise = $http.post(akala.httpconf.url + 'ws/saveAddress', self.currentAddress,
+                {
+                    params: {
+                        userKey: $rootScope.localUserInfo.userKey,
+                        userType: $rootScope.localUserInfo.userType
+                    }
+                });
+            promise.success(function (data) {
+                deferred.resolve(data);
+            });
+            promise.error(function (data) {
+                deferred.reject();
+            });
+        };
+    })
+
     .factory("JsonToFormData", function () {
         var param = function (obj) {
             var query = '', name, value, fullSubName, subName, subValue, innerObj, i;
@@ -210,38 +256,6 @@ angular.module('akala.services', [])
         }
 
         return ( transformRequest );
-    })
-
-    .service("AddressSrv", function () {
-        var self = this;
-
-        self.initNewAddress = function () {
-            self.currentAddress = {
-                name: '',
-                gender: 'M',
-                location: {},
-                detailLocation: '',
-                mobile: ''
-            }
-        };
-
-        self.validateAddress = function () {
-            if (!self.currentAddress.name) {
-                return '联系人不能为空';
-            } else if (!self.currentAddress.location.name) {
-                return '地址不能为空';
-            } else if (!self.currentAddress.mobile) {
-                return '手机号不能为空';
-            } else if (!validator.isMobilePhone(self.currentAddress.mobile, 'zh-CN')) {
-                return '请输入正确手机号';
-            } else {
-                return true;
-            }
-        };
-
-        self.saveAddress = function () {
-            //TODO
-        };
     })
 
     .factory("Router2Console", ["$rootScope", function ($rootScope) {
