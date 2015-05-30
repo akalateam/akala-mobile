@@ -5,10 +5,17 @@ angular.module('akala.controllers', [])
     .controller('ShopCtrl', function ($scope) {
     })
 
-    .controller('MineCtrl', function ($scope, $rootScope, UserSrv) {
+    .controller('MineCtrl', function ($scope, $rootScope, $state, UserSrv) {
         $scope.logout = function () {
             UserSrv.removeLocalUser();
             delete $rootScope.localUserInfo;
+        };
+        $scope.goToAddress = function () {
+            if ($rootScope.localUserInfo) {
+                $state.go('tab.address');
+            } else {
+                $state.go('tab.login');
+            }
         }
     })
 
@@ -118,13 +125,29 @@ angular.module('akala.controllers', [])
 
     })
 
-    .controller('AddressNewAmendCtrl', function ($scope, $stateParams, AddressSrv) {
+    .controller('AddressNewAmendCtrl', function ($scope, $stateParams, $ionicModal, AddressSrv) {
         if ($stateParams.pageType == 'N') {
             $scope.title = '新增地址';
             AddressSrv.initNewAddress();
             $scope.addrInfo = AddressSrv.currentAddress;
         } else if ($stateParams.pageType == 'A') {
             $scope.title = '修改地址';
+        }
+
+        $scope.saveAddress = function () {
+            var validateResult = AddressSrv.validateAddress();
+            if (validateResult !== true) {
+                $scope.alertHtml = validateResult;
+                $ionicModal.fromTemplateUrl('templates/alert-modal.html', {
+                    scope: $scope,
+                    animation: 'slide-in-up'
+                }).then(function (modal) {
+                    $scope.alertModal = modal;
+                    $scope.alertModal.show();
+                });
+            } else {
+                AddressSrv.saveAddress()
+            }
         }
     })
 

@@ -1,7 +1,7 @@
 <ion-view view-title="{{title}}">
     <ion-nav-buttons side="right">
         <a class="button button-outline ion-checkmark-round button-light"
-           style="color:white; border-color:#ffffff;">保存</a>
+           style="color:white; border-color:#ffffff;" ng-click="saveAddress()">保存</a>
     </ion-nav-buttons>
 
     <ion-content padding="true" class="has-header">
@@ -31,10 +31,12 @@
             </span>
             <span class="item item-input">
                 <span class="input-label">收餐地址</span>
-                <a class="button button-clear" style="font-size: 14px;padding: 0px; margin: -5px -1px;"
+                <a class="button button-clear" style="font-size: 14px;padding: 0px; margin: -5px -1px;text-align: left;"
                    ui-sref="tab.address-map">
                     <i class="icon ion-ios-location-outline button-clear" style="padding: 0px;"></i>
-                    请选择小区、大厦或学校
+                    <span style="width: 70%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: inline-block;color: rgb(17, 17, 17);"
+                          ng-if="!!addrInfo.location.name">{{addrInfo.location.name}}</span>
+                    <span ng-if="!addrInfo.location.name">请选择小区、大厦或学校</span>
                     <i class="icon ion-chevron-right button-clear"></i>
                 </a>
             </span>

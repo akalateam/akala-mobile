@@ -223,7 +223,25 @@ angular.module('akala.services', [])
                 detailLocation: '',
                 mobile: ''
             }
-        }
+        };
+
+        self.validateAddress = function () {
+            if (!self.currentAddress.name) {
+                return '联系人不能为空';
+            } else if (!self.currentAddress.location.name) {
+                return '地址不能为空';
+            } else if (!self.currentAddress.mobile) {
+                return '手机号不能为空';
+            } else if (!validator.isMobilePhone(self.currentAddress.mobile, 'zh-CN')) {
+                return '请输入正确手机号';
+            } else {
+                return true;
+            }
+        };
+
+        self.saveAddress = function () {
+            //TODO
+        };
     })
 
     .factory("Router2Console", ["$rootScope", function ($rootScope) {
