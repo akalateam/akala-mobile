@@ -121,17 +121,25 @@ angular.module('akala.controllers', [])
         }
     })
 
-    .controller('AddressDetailCtrl', function ($scope, $stateParams) {
-
+    .controller('AddressCtrl', function ($scope, AddressSrv) {
+        AddressSrv.retrieveAddress().then(function (data) {
+            $scope.addressList = AddressSrv.addressList;
+        });
     })
 
-    .controller('AddressNewAmendCtrl', function ($scope, $stateParams, $ionicModal, AddressSrv) {
+    .controller('AddressDetailCtrl', function ($scope, $stateParams, $ionicModal, $state, AddressSrv) {
+        $scope.addrInfo = AddressSrv.currentAddress;
+        $scope.pageType = AddressSrv.pageType = $stateParams.pageType;
         if ($stateParams.pageType == 'N') {
             $scope.title = '新增地址';
             AddressSrv.initNewAddress();
-            $scope.addrInfo = AddressSrv.currentAddress;
         } else if ($stateParams.pageType == 'A') {
             $scope.title = '修改地址';
+            for (var i = 0; i < AddressSrv.addressList.length; i++) {
+                if ($stateParams.id == AddressSrv.addressList[i].id) {
+                    angular.copy(AddressSrv.addressList[i], AddressSrv.currentAddress);
+                }
+            }
         }
 
         $scope.saveAddress = function () {
@@ -146,8 +154,16 @@ angular.module('akala.controllers', [])
                     $scope.alertModal.show();
                 });
             } else {
-                AddressSrv.saveAddress()
+                AddressSrv.saveAddress().then(AddressSrv.retrieveAddress).then(function () {
+                    $state.go('tab.address');
+                });
             }
+        }
+
+        $scope.deleteAddress = function () {
+            AddressSrv.deleteAddress().then(AddressSrv.retrieveAddress).then(function () {
+                $state.go('tab.address');
+            });
         }
     })
 
@@ -266,7 +282,10 @@ angular.module('akala.controllers', [])
                             AddressSrv.currentAddress.location.lng = addrInfo.location.lng;
                             AddressSrv.currentAddress.location.lat = addrInfo.location.lat;
 
-                            $state.go('tab.address-detail', {pageType: 'N'});
+                            $state.go('tab.address-detail', {
+                                pageType: AddressSrv.pageType,
+                                id: AddressSrv.currentAddress.id
+                            });
                         }
                     }
                 });

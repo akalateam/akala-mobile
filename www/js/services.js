@@ -173,16 +173,37 @@ angular.module('akala.services', [])
 
     .service("AddressSrv", function ($rootScope, $http, $q, JsonToFormData) {
         var self = this;
+        self.currentAddress = {};
+        self.addressList = [];
+        pageType = '';
+
+        self.retrieveAddress = function () {
+            var deferred = $q.defer();
+            var promise = $http.get(akala.httpconf.url + 'ws/retrieveAddress', {
+                params: {
+                    userKey: $rootScope.localUserInfo.userKey,
+                    userType: $rootScope.localUserInfo.userType
+                }
+            });
+            promise.success(function (data) {
+                angular.copy(data, self.addressList);
+                deferred.resolve(data);
+            });
+            promise.error(function (data) {
+                deferred.reject();
+            });
+            return deferred.promise;
+        };
 
         self.initNewAddress = function () {
-            self.currentAddress = {
-                id: '',
+            angular.copy({
+                id: undefined,
                 name: '',
                 gender: 'M',
                 location: {},
                 detailLocation: '',
                 mobile: ''
-            }
+            }, self.currentAddress);
         };
 
         self.validateAddress = function () {
@@ -201,20 +222,38 @@ angular.module('akala.services', [])
 
         self.saveAddress = function () {
             var deferred = $q.defer();
-            var promise = $http.post(akala.httpconf.url + 'ws/saveAddress', self.currentAddress,
-                {
-                    params: {
-                        userKey: $rootScope.localUserInfo.userKey,
-                        userType: $rootScope.localUserInfo.userType
-                    }
-                });
+            var promise = $http.post(akala.httpconf.url + 'ws/saveAddress', self.currentAddress, {
+                params: {
+                    userKey: $rootScope.localUserInfo.userKey,
+                    userType: $rootScope.localUserInfo.userType
+                }
+            });
             promise.success(function (data) {
                 deferred.resolve(data);
             });
             promise.error(function (data) {
                 deferred.reject();
             });
+            return deferred.promise;
         };
+
+        self.deleteAddress = function () {
+            var deferred = $q.defer();
+            var promise = $http.get(akala.httpconf.url + 'ws/deleteAddress', {
+                params: {
+                    userKey: $rootScope.localUserInfo.userKey,
+                    userType: $rootScope.localUserInfo.userType,
+                    addressId: self.currentAddress.id
+                }
+            });
+            promise.success(function (data) {
+                deferred.resolve(data);
+            });
+            promise.error(function (data) {
+                deferred.reject();
+            });
+            return deferred.promise;
+        }
     })
 
     .factory("JsonToFormData", function () {

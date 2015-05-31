@@ -48,6 +48,9 @@
                 <span class="input-label">手机</span>
                 <input type="text" placeholder="配送人员联系您的方式" ng-model="addrInfo.mobile">
             </label>
+            <button class="button button-assertive button-block" ng-show="pageType=='A'"
+                    ng-click="deleteAddress()">删除该地址
+            </button>
         </div>
     </ion-content>
 </ion-view>
