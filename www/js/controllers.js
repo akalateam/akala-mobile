@@ -19,21 +19,31 @@ angular.module('akala.controllers', [])
         }
     })
 
-    .controller('LoginCtrl', function ($scope, $state, $ionicLoading, UserSrv) {
+    .controller('LoginCtrl', function ($scope, $state, $ionicLoading, UserSrv,MobileSrv) {
+
+        $scope.leftSeconds = "";
+
         $scope.signIn = function (user) {
 
-            if (!user || !user.userKey || !user.password) {
+            if (!user || !user.userKey || !user.password || !user.mobile || !user.identityCode) {
                 return;
             }
 
+
+            var userKey = "";
+            if ($scope.loginType == 'Quick') {
+                userKey = user.mobile;
+            } else if ($scope.loginType == 'Normal'){
+                userKey = user.userKey;
+            }
             var userInfo = {};
-            userInfo.userKey = user.userKey;
+            userInfo.userKey = userKey;
             userInfo.userType = UserSrv.getUserType(user.userKey);
             userInfo.password = user.password;
 
             $ionicLoading.show();
             UserSrv.setLocalUser(userInfo).then(UserSrv.logonWithLocalUser).then(function (user) {
-                $state.go('tab.mine');
+                $state.go('tab.mine.summary');
                 $ionicLoading.hide();
             }).catch(function (error) {
                 $scope.$apply(function (error) {
@@ -41,7 +51,36 @@ angular.module('akala.controllers', [])
                 }(error));
                 $ionicLoading.hide();
             });
-        }
+        };
+
+        $scope.changeLoginType = function(loginType){
+            $scope.loginType = loginType;
+            if (loginType == 'Quick') {
+                this.user.password = '';
+            } else if(loginType == 'Normal') {
+                this.user.identityCode = '';
+            }
+        };
+
+        $scope.sendMobileCredentials = function () {
+            console.log("call get identity code");
+            if (validator.isMobilePhone($scope.user.mobile, 'zh-CN')) {
+                MobileSrv.sendMobileCredentials($scope.user.mobile).then(function (credentials) {
+                    $scope.user.mobileCredentials = credentials;
+
+                    $scope.leftSeconds = 60;
+                    var signUpTimeoutFunc = function () {
+                        if ($scope.leftSeconds === 0) {
+                            $interval.cancel(signUpTimeout);
+                            $scope.leftSeconds = '';
+                            return;
+                        }
+                        $scope.leftSeconds--;
+                    };
+                    var signUpTimeout = $interval(signUpTimeoutFunc, 1000);
+                })
+            }
+        };
     })
 
     .controller('SignupCtrl', function ($scope, $state, $ionicLoading, $interval, UserSrv, MobileSrv) {
