@@ -171,6 +171,91 @@ angular.module('akala.services', [])
         };
     })
 
+    .service("AddressSrv", function ($rootScope, $http, $q, JsonToFormData) {
+        var self = this;
+        self.currentAddress = {};
+        self.addressList = [];
+        pageType = '';
+
+        self.retrieveAddress = function () {
+            var deferred = $q.defer();
+            var promise = $http.get(akala.httpconf.url + 'ws/retrieveAddress', {
+                params: {
+                    userKey: $rootScope.localUserInfo.userKey,
+                    userType: $rootScope.localUserInfo.userType
+                }
+            });
+            promise.success(function (data) {
+                angular.copy(data, self.addressList);
+                deferred.resolve(data);
+            });
+            promise.error(function (data) {
+                deferred.reject();
+            });
+            return deferred.promise;
+        };
+
+        self.initNewAddress = function () {
+            angular.copy({
+                id: undefined,
+                name: '',
+                gender: 'M',
+                location: {},
+                detailLocation: '',
+                mobile: ''
+            }, self.currentAddress);
+        };
+
+        self.validateAddress = function () {
+            if (!self.currentAddress.name) {
+                return '联系人不能为空';
+            } else if (!self.currentAddress.location.name) {
+                return '地址不能为空';
+            } else if (!self.currentAddress.mobile) {
+                return '手机号不能为空';
+            } else if (!validator.isMobilePhone(self.currentAddress.mobile, 'zh-CN')) {
+                return '请输入正确手机号';
+            } else {
+                return true;
+            }
+        };
+
+        self.saveAddress = function () {
+            var deferred = $q.defer();
+            var promise = $http.post(akala.httpconf.url + 'ws/saveAddress', self.currentAddress, {
+                params: {
+                    userKey: $rootScope.localUserInfo.userKey,
+                    userType: $rootScope.localUserInfo.userType
+                }
+            });
+            promise.success(function (data) {
+                deferred.resolve(data);
+            });
+            promise.error(function (data) {
+                deferred.reject();
+            });
+            return deferred.promise;
+        };
+
+        self.deleteAddress = function () {
+            var deferred = $q.defer();
+            var promise = $http.get(akala.httpconf.url + 'ws/deleteAddress', {
+                params: {
+                    userKey: $rootScope.localUserInfo.userKey,
+                    userType: $rootScope.localUserInfo.userType,
+                    addressId: self.currentAddress.id
+                }
+            });
+            promise.success(function (data) {
+                deferred.resolve(data);
+            });
+            promise.error(function (data) {
+                deferred.reject();
+            });
+            return deferred.promise;
+        }
+    })
+
     .service("ShopSrv", function($http, $q){
         var self = this;
         self.$http = $http;
@@ -234,20 +319,6 @@ angular.module('akala.services', [])
         }
 
         return ( transformRequest );
-    })
-
-    .service("AddressSrv", function () {
-        var self = this;
-
-        self.initNewAddress = function () {
-            self.currentAddress = {
-                name: '',
-                gender: 'M',
-                location: {},
-                detailLocation: '',
-                mobile: ''
-            }
-        }
     })
 
     .factory("Router2Console", ["$rootScope", function ($rootScope) {

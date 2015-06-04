@@ -5,5 +5,27 @@
     </ion-nav-buttons>
 
     <ion-content padding="true" class="has-header">
+        <div class="list">
+            <li class="item" ng-class="{'item-high-light': select}" ng-mouseenter="select=true"
+                ng-mouseleave="select=false"
+                ng-repeat="address in addressList">
+                <table style="width: 100%">
+                    <tr>
+                        <td style="width: 100%;">
+                            <div style="font-size: 0.8em;color: rgb(178, 178, 178);white-space: normal;">
+                                {{address.name}} {{address.gender == 'M' ? '先生' : '女士'}} {{address.mobile}}
+                            </div>
+                            <div class="padding-top" style="font-size: 0.9em;white-space: normal;">
+                                {{address.location.name}} {{address.detailLocation}}
+                            </div>
+                        </td>
+                        <td>
+                            <a class="button button-clear icon ion-compose" style="padding: 0px;"
+                               ui-sref="tab.address-detail({pageType:'A',id:'{{address.id}}'})"></a>
+                        </td>
+                    </tr>
+                </table>
+            </li>
+        </div>
     </ion-content>
 </ion-view>

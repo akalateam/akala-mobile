@@ -90,17 +90,17 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
             views: {
                 'tab-mine': {
                     templateUrl: 'templates/mine/address.html',
-                    controller: 'AddressDetailCtrl'
+                    controller: 'AddressCtrl'
                 }
             }
         })
 
         .state('tab.address-detail', {
-            url: '/address-detail/:pageType',
+            url: '/address-detail/:pageType/:id',
             views: {
                 'tab-mine': {
                     templateUrl: 'templates/mine/address-detail.html',
-                    controller: 'AddressNewAmendCtrl'
+                    controller: 'AddressDetailCtrl'
                 }
             }
         })

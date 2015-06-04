@@ -21,7 +21,7 @@
             <ion-list>
                 <label class="item item-input">
                     <i class="icon placeholder-icon ion-android-phone-portrait"></i>
-                    <input type="text" name="mobile" ng-model="user.mobile" placeholder="输入手机号码" akala-mobile
+                    <input type="text" name="mobile" ng-model="$parent.user.mobile" placeholder="输入手机号码" akala-mobile
                            akala-unique required>
                     <i class="icon placeholder-icon ion-checkmark-round balanced"
                        ng-show="!(mobileForm.mobile.$error.required || mobileForm.mobile.$error.mobile || mobileForm.mobile.$error.unique)"
@@ -45,7 +45,7 @@
 
                 <label class="item item-input">
                     <i class="icon placeholder-icon ion-android-attach"></i>
-                    <input type="text" name="mobileCredentials" ng-model="user.mobileCredentials" placeholder="输入短信验证码"
+                    <input type="text" name="mobileCredentials" ng-model="$parent.user.mobileCredentials" placeholder="输入短信验证码"
                            required>
                     <i class="icon placeholder-icon ion-checkmark-round balanced"
                        ng-show="!mobileForm.mobileCredentials.$error.required"
@@ -57,7 +57,7 @@
 
                 <label class="item item-input">
                     <i class="icon placeholder-icon ion-android-lock"></i>
-                    <input type="password" name="password" ng-model="user.password" ng-minlength="6"
+                    <input type="password" name="password" ng-model="$parent.user.password" ng-minlength="6"
                            placeholder="输入六位以上密码" required>
                     <i class="icon placeholder-icon ion-checkmark-round balanced"
                        ng-show="!(mobileForm.password.$error.required || mobileForm.password.$error.minlength)"
@@ -89,7 +89,7 @@
             <ion-list>
                 <label class="item item-input">
                     <i class="icon placeholder-icon ion-android-mail"></i>
-                    <input type="email" name="email" ng-model="user.email" placeholder="请输入邮箱" akala-unique required>
+                    <input type="email" name="email" ng-model="$parent.user.email" placeholder="请输入邮箱" akala-unique required>
                     <i class="icon placeholder-icon ion-checkmark-round balanced"
                        ng-show="!(emailForm.email.$error.email || emailForm.email.$error.unique || emailForm.email.$error.required)"
                        style="position: relative; left: -15px;"></i>
@@ -102,7 +102,7 @@
 
                 <label class="item item-input">
                     <i class="icon placeholder-icon ion-android-lock"></i>
-                    <input type="password" name="password" ng-model="user.password" ng-minlength="6"
+                    <input type="password" name="password" ng-model="$parent.user.password" ng-minlength="6"
                            placeholder="输入六位以上密码" required>
                     <i class="icon placeholder-icon ion-checkmark-round balanced"
                        ng-show="!(emailForm.password.$error.required || emailForm.password.$error.minlength)"

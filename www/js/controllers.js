@@ -90,28 +90,45 @@ angular.module('akala.controllers', [])
 
     })
 
-    .controller('MineCtrl', function ($scope, $rootScope, UserSrv) {
+    .controller('MineCtrl', function ($scope, $rootScope, $state, UserSrv) {
         $scope.logout = function () {
             UserSrv.removeLocalUser();
             delete $rootScope.localUserInfo;
+        };
+        $scope.goToAddress = function () {
+            if ($rootScope.localUserInfo) {
+                $state.go('tab.address');
+            } else {
+                $state.go('tab.login');
+            }
         }
     })
 
-    .controller('LoginCtrl', function ($scope, $state, $ionicLoading, UserSrv) {
+    .controller('LoginCtrl', function ($scope, $state, $ionicLoading, UserSrv,MobileSrv) {
+
+        $scope.leftSeconds = "";
+
         $scope.signIn = function (user) {
 
-            if (!user || !user.userKey || !user.password) {
+            if (!user || !user.userKey || !user.password || !user.mobile || !user.identityCode) {
                 return;
             }
 
+
+            var userKey = "";
+            if ($scope.loginType == 'Quick') {
+                userKey = user.mobile;
+            } else if ($scope.loginType == 'Normal'){
+                userKey = user.userKey;
+            }
             var userInfo = {};
-            userInfo.userKey = user.userKey;
+            userInfo.userKey = userKey;
             userInfo.userType = UserSrv.getUserType(user.userKey);
             userInfo.password = user.password;
 
             $ionicLoading.show();
             UserSrv.setLocalUser(userInfo).then(UserSrv.logonWithLocalUser).then(function (user) {
-                $state.go('tab.mine');
+                $state.go('tab.mine.summary');
                 $ionicLoading.hide();
             }).catch(function (error) {
                 $scope.$apply(function (error) {
@@ -119,7 +136,36 @@ angular.module('akala.controllers', [])
                 }(error));
                 $ionicLoading.hide();
             });
-        }
+        };
+
+        $scope.changeLoginType = function(loginType){
+            $scope.loginType = loginType;
+            if (loginType == 'Quick') {
+                this.user.password = '';
+            } else if(loginType == 'Normal') {
+                this.user.identityCode = '';
+            }
+        };
+
+        $scope.sendMobileCredentials = function () {
+            console.log("call get identity code");
+            if (validator.isMobilePhone($scope.user.mobile, 'zh-CN')) {
+                MobileSrv.sendMobileCredentials($scope.user.mobile).then(function (credentials) {
+                    $scope.user.mobileCredentials = credentials;
+
+                    $scope.leftSeconds = 60;
+                    var signUpTimeoutFunc = function () {
+                        if ($scope.leftSeconds === 0) {
+                            $interval.cancel(signUpTimeout);
+                            $scope.leftSeconds = '';
+                            return;
+                        }
+                        $scope.leftSeconds--;
+                    };
+                    var signUpTimeout = $interval(signUpTimeoutFunc, 1000);
+                })
+            }
+        };
     })
 
     .controller('SignupCtrl', function ($scope, $state, $ionicLoading, $interval, UserSrv, MobileSrv) {
@@ -199,17 +245,49 @@ angular.module('akala.controllers', [])
         }
     })
 
-    .controller('AddressDetailCtrl', function ($scope, $stateParams) {
-
+    .controller('AddressCtrl', function ($scope, AddressSrv) {
+        AddressSrv.retrieveAddress().then(function (data) {
+            $scope.addressList = AddressSrv.addressList;
+        });
     })
 
-    .controller('AddressNewAmendCtrl', function ($scope, $stateParams, AddressSrv) {
+    .controller('AddressDetailCtrl', function ($scope, $stateParams, $ionicModal, $state, AddressSrv) {
+        $scope.addrInfo = AddressSrv.currentAddress;
+        $scope.pageType = AddressSrv.pageType = $stateParams.pageType;
         if ($stateParams.pageType == 'N') {
             $scope.title = '新增地址';
             AddressSrv.initNewAddress();
-            $scope.addrInfo = AddressSrv.currentAddress;
         } else if ($stateParams.pageType == 'A') {
             $scope.title = '修改地址';
+            for (var i = 0; i < AddressSrv.addressList.length; i++) {
+                if ($stateParams.id == AddressSrv.addressList[i].id) {
+                    angular.copy(AddressSrv.addressList[i], AddressSrv.currentAddress);
+                }
+            }
+        }
+
+        $scope.saveAddress = function () {
+            var validateResult = AddressSrv.validateAddress();
+            if (validateResult !== true) {
+                $scope.alertHtml = validateResult;
+                $ionicModal.fromTemplateUrl('templates/alert-modal.html', {
+                    scope: $scope,
+                    animation: 'slide-in-up'
+                }).then(function (modal) {
+                    $scope.alertModal = modal;
+                    $scope.alertModal.show();
+                });
+            } else {
+                AddressSrv.saveAddress().then(AddressSrv.retrieveAddress).then(function () {
+                    $state.go('tab.address');
+                });
+            }
+        }
+
+        $scope.deleteAddress = function () {
+            AddressSrv.deleteAddress().then(AddressSrv.retrieveAddress).then(function () {
+                $state.go('tab.address');
+            });
         }
     })
 
@@ -328,7 +406,10 @@ angular.module('akala.controllers', [])
                             AddressSrv.currentAddress.location.lng = addrInfo.location.lng;
                             AddressSrv.currentAddress.location.lat = addrInfo.location.lat;
 
-                            $state.go('tab.address-detail', {pageType: 'N'});
+                            $state.go('tab.address-detail', {
+                                pageType: AddressSrv.pageType,
+                                id: AddressSrv.currentAddress.id
+                            });
                         }
                     }
                 });
