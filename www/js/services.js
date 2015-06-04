@@ -171,6 +171,30 @@ angular.module('akala.services', [])
         };
     })
 
+    .service("ShopSrv", function($http, $q){
+        var self = this;
+        self.$http = $http;
+        self.$q = $q;
+
+        self.getShopList = function(lng, lat) {
+            var deferred = self.$q.defer();
+            var shopPromise = $http.get(akala.httpconf.url + 'ws/shopList', {
+                    params: {
+                        longitude: lng,
+                        latitude: lat
+                    }
+                }
+            );
+            shopPromise.success(function (data) {
+                deferred.resolve(data);
+            });
+            shopPromise.error(function (data) {
+                deferred.reject();
+            });
+            return deferred.promise;
+        }
+    })
+
     .factory("JsonToFormData", function () {
         var param = function (obj) {
             var query = '', name, value, fullSubName, subName, subValue, innerObj, i;

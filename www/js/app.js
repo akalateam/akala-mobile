@@ -113,6 +113,17 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
                     controller: 'AddressMapCtrl'
                 }
             }
+        })
+
+        .state('tab.shop-detail', {
+            url : '/shop-detail',
+            views : {
+                'tab-shop' : {
+                    templateUrl : 'templates/shop/shop-detail.html',
+                    controller : 'ShopDetailCtrl'
+                }
+            }
+
         });
 
     // if none of the above states are matched, use this as the fallback
