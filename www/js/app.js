@@ -59,8 +59,7 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
             url: "/login",
             views: {
                 'tab-mine': {
-                    templateUrl: 'templates/mine/login.html',
-                    controller: 'LoginCtrl'
+                    templateUrl: 'templates/mine/login.html'
                 }
             }
         })

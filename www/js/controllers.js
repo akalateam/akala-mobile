@@ -5,8 +5,8 @@ angular.module('akala.controllers', [])
     .controller('ShopCtrl', function ($scope, ShopSrv) {
         $scope.myLocation = {
             address: "中山大学珠海校区",
-            lng : 113.591144,
-            lat : 22.367448
+            lng: 113.591144,
+            lat: 22.367448
         };
         $scope.imagePrefixUrl = akala.httpconf.url + "ws/image/";
         $scope.$on('$ionicView.loaded', function (viewInfo, state) {
@@ -77,7 +77,7 @@ angular.module('akala.controllers', [])
              });*/
         });
         $scope.$on('$ionicView.loaded', function (viewInfo, state) {
-            ShopSrv.getShopList($scope.myLocation.lng, $scope.myLocation.lat).then(function(shopList){
+            ShopSrv.getShopList($scope.myLocation.lng, $scope.myLocation.lat).then(function (shopList) {
                 $scope.shopList = shopList;
                 //$scope.$apply(function(shopList) {
                 //    $scope.shopList = shopList;
@@ -86,7 +86,7 @@ angular.module('akala.controllers', [])
         })
     })
 
-    .controller('ShopDetailCtrl', function($scope, ShopSrv){
+    .controller('ShopDetailCtrl', function ($scope, ShopSrv) {
 
     })
 
@@ -104,29 +104,25 @@ angular.module('akala.controllers', [])
         }
     })
 
-    .controller('LoginCtrl', function ($scope, $state, $ionicLoading, UserSrv,MobileSrv) {
-
+    .controller('LoginCtrl', function ($scope, $state, $ionicLoading, $interval, UserSrv, MobileSrv) {
+        $scope.loginType = 'Quick';
         $scope.leftSeconds = "";
 
         $scope.signIn = function (user) {
-
-
-            if (loginType == 'Quick') {
+            if ($scope.loginType == 'Quick') {
                 if (!user || !user.mobile || !user.identityCode) {
                     return;
-                }   
-            } else if (loginType == 'Normal') {
+                }
+            } else if ($scope.loginType == 'Normal') {
                 if (!user || !user.userKey || !user.password) {
                     return;
                 }
             }
-         
-
 
             var userKey = "";
             if ($scope.loginType == 'Quick') {
                 userKey = user.mobile;
-            } else if ($scope.loginType == 'Normal'){
+            } else if ($scope.loginType == 'Normal') {
                 userKey = user.userKey;
             }
             var userInfo = {};
@@ -146,11 +142,11 @@ angular.module('akala.controllers', [])
             });
         };
 
-        $scope.changeLoginType = function(loginType){
+        $scope.changeLoginType = function (loginType) {
             $scope.loginType = loginType;
             if (loginType == 'Quick') {
                 this.user.password = '';
-            } else if(loginType == 'Normal') {
+            } else if (loginType == 'Normal') {
                 this.user.identityCode = '';
             }
         };
