@@ -110,9 +110,17 @@ angular.module('akala.controllers', [])
 
         $scope.signIn = function (user) {
 
-            if (!user || !user.userKey || !user.password || !user.mobile || !user.identityCode) {
-                return;
+
+            if (loginType == 'Quick') {
+                if (!user || !user.mobile || !user.identityCode) {
+                    return;
+                }   
+            } else if (loginType == 'Normal') {
+                if (!user || !user.userKey || !user.password) {
+                    return;
+                }
             }
+         
 
 
             var userKey = "";
