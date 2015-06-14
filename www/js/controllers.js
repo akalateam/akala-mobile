@@ -96,7 +96,7 @@ angular.module('akala.controllers', [])
         };
         $scope.goToAddress = function () {
             if ($rootScope.localUserInfo) {
-                $state.go('tab.address');
+                $state.go('address');
             } else {
                 $state.go('tab.login');
             }
@@ -284,14 +284,14 @@ angular.module('akala.controllers', [])
                 });
             } else {
                 AddressSrv.saveAddress().then(AddressSrv.retrieveAddress).then(function () {
-                    $state.go('tab.address');
+                    $state.go('address');
                 });
             }
         }
 
         $scope.deleteAddress = function () {
             AddressSrv.deleteAddress().then(AddressSrv.retrieveAddress).then(function () {
-                $state.go('tab.address');
+                $state.go('address');
             });
         }
     })
@@ -304,7 +304,7 @@ angular.module('akala.controllers', [])
         }
 
         //init Map Obj
-        $scope.mapObj = new AMap.Map("mapContainer", {
+        $scope.mapObj = new AMap.Map("addressMapContainer", {
             resizeEnable: true,
             view: new AMap.View2D({
                 resizeEnable: true,
@@ -411,7 +411,7 @@ angular.module('akala.controllers', [])
                             AddressSrv.currentAddress.location.lng = addrInfo.location.lng;
                             AddressSrv.currentAddress.location.lat = addrInfo.location.lat;
 
-                            $state.go('tab.address-detail', {
+                            $state.go('address-detail', {
                                 pageType: AddressSrv.pageType,
                                 id: AddressSrv.currentAddress.id
                             });
