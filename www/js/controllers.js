@@ -10,7 +10,6 @@ angular.module('akala.controllers', [])
         };
         $scope.imagePrefixUrl = akala.httpconf.url + "ws/image/";
         $scope.$on('$ionicView.loaded', function (viewInfo, state) {
-            debugger;
             /*
              var geolocation;
              var map = new AMap.Map("mapContainer", {
@@ -132,7 +131,7 @@ angular.module('akala.controllers', [])
 
             $ionicLoading.show();
             UserSrv.setLocalUser(userInfo).then(UserSrv.logonWithLocalUser).then(function (user) {
-                $state.go('tab.mine.summary');
+                $state.go('tab.mine');
                 $ionicLoading.hide();
             }).catch(function (error) {
                 $scope.$apply(function (error) {
@@ -144,10 +143,12 @@ angular.module('akala.controllers', [])
 
         $scope.changeLoginType = function (loginType) {
             $scope.loginType = loginType;
-            if (loginType == 'Quick') {
-                this.user.password = '';
-            } else if (loginType == 'Normal') {
-                this.user.identityCode = '';
+            if ($scope.user) {
+                if (loginType == 'Quick') {
+                    $scope.user.password = '';
+                } else if (loginType == 'Normal') {
+                    $scope.user.identityCode = '';
+                }
             }
         };
 

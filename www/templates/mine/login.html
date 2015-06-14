@@ -59,9 +59,12 @@
                 <div class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">{{loginError}}
                 </div>
             </ion-list>
-            <button href="#/forgetpwd" class="button button-calm button-clear button-small" style="padding-left: 0px;">
-                忘记密码
-            </button>
+            <a href="#/tab/resetpwd">
+                <button class="button button-calm button-clear button-small"
+                        style="padding-left: 0px;">
+                    忘记密码
+                </button>
+            </a>
             <button name="loginBtn" ng-disabled="quickLoginForm.$invalid" class="button button-block button-balanced"
                     ng-click="signIn(user)">登陆
             </button>
@@ -101,9 +104,11 @@
                 </div>
 
             </ion-list>
-            <button href="#/forgetpwd" class="button button-calm button-clear button-small" style="padding-left: 0px;">
-                忘记密码
-            </button>
+            <a href="#/tab/resetpwd">
+                <button class="button button-calm button-clear button-small" style="padding-left: 0px;">
+                    忘记密码
+                </button>
+            </a>
             <button name="loginBtn" ng-disabled="normalLoginForm.$invalid" class="button button-balanced button-block"
                     ng-click="signIn(user)">登陆
             </button>
