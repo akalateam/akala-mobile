@@ -10,9 +10,10 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
             StatusBar.styleLightContent();
         }
     });
-}).run(function ($rootScope, $http, $window, UserSrv, Router2Console) {
+}).run(function ($rootScope, $http, $window, UserSrv, Router2Console, EnableBackBtn) {
     UserSrv.logonWithLocalUser();
     Router2Console.active = $window.akala.enableDebug;
+    EnableBackBtn.enableBackStateNames = ['address'];
 }).constant('$ionicLoadingConfig', {
     template: '<ion-spinner class="spinner-balanced"></ion-spinner>'
 }).config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
@@ -59,8 +60,7 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
             url: "/login",
             views: {
                 'tab-mine': {
-                    templateUrl: 'templates/mine/login.html',
-                    controller: 'LoginCtrl'
+                    templateUrl: 'templates/mine/login.html'
                 }
             }
         })
@@ -85,42 +85,30 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
             }
         })
 
-        .state('tab.address', {
+        .state('address', {
             url: '/address',
-            views: {
-                'tab-mine': {
-                    templateUrl: 'templates/mine/address.html',
-                    controller: 'AddressCtrl'
-                }
-            }
+            templateUrl: 'templates/address/address.html',
+            controller: 'AddressCtrl'
         })
 
-        .state('tab.address-detail', {
+        .state('address-detail', {
             url: '/address-detail/:pageType/:id',
-            views: {
-                'tab-mine': {
-                    templateUrl: 'templates/mine/address-detail.html',
-                    controller: 'AddressDetailCtrl'
-                }
-            }
+            templateUrl: 'templates/address/address-detail.html',
+            controller: 'AddressDetailCtrl'
         })
 
-        .state('tab.address-map', {
+        .state('address-map', {
             url: '/address-map',
-            views: {
-                'tab-mine': {
-                    templateUrl: 'templates/mine/address-map.html',
-                    controller: 'AddressMapCtrl'
-                }
-            }
+            templateUrl: 'templates/address/address-map.html',
+            controller: 'AddressMapCtrl'
         })
 
         .state('tab.shop-detail', {
-            url : '/shop-detail',
-            views : {
-                'tab-shop' : {
-                    templateUrl : 'templates/shop/shop-detail.html',
-                    controller : 'ShopDetailCtrl'
+            url: '/shop-detail',
+            views: {
+                'tab-shop': {
+                    templateUrl: 'templates/shop/shop-detail.html',
+                    controller: 'ShopDetailCtrl'
                 }
             }
 

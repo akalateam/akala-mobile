@@ -1,29 +1,27 @@
 <ion-view view-title="用户登陆">
-    <ion-content padding="true" class="has-header" ng-controller="LoginCtrl">
-        <div class="padding">
-            <table style="width: 100%">
-                <tr>
-                    <td>
-                        <button ng-class="{true: 'button button-block button-clear button-calm', false: 'button button-block button-clear'}[loginType != 'Normal']"
-                                ng-click="changeLoginType('Quick')">
-                            短信快捷登录
-                        </button>
-                    </td>
-                    <td></td>
-                    <td>
-                        <button ng-class="{true: 'button button-block button-clear button-calm', false: 'button button-block button-clear'}[loginType == 'Normal']"
-                                ng-click="changeLoginType('Normal')">
-                            普通登录
-                        </button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <form name="quickLoginForm" ng-show="loginType != 'Normal'" ng-submit="signIn(user)" novalidate>
+    <ion-content class="padding" class="has-header" ng-controller="LoginCtrl">
+        <table style="width: 100%">
+            <tr>
+                <td>
+                    <button ng-class="{true: 'button button-block button-clear button-calm ion-flash', false: 'button button-block button-clear ion-flash'}[loginType != 'Normal']"
+                            ng-click="changeLoginType('Quick')">
+                        短信快捷登录
+                    </button>
+                </td>
+                <td></td>
+                <td>
+                    <button ng-class="{true: 'button button-block button-clear button-calm ion-flash-off', false: 'button button-block button-clear ion-flash-off'}[loginType == 'Normal']"
+                            ng-click="changeLoginType('Normal')">
+                        普通登录
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <form name="quickLoginForm" ng-show="loginType != 'Normal'" novalidate>
             <ion-list>
                 <label class="item item-input">
                     <i class="icon placeholder-icon ion-android-phone-portrait"></i>
-                    <input type="text" name="mobile" ng-model="user.mobile" placeholder="输入手机号码" akala-mobile  required>
+                    <input type="text" name="mobile" ng-model="user.mobile" placeholder="输入手机号码" akala-mobile required>
                     <i class="icon placeholder-icon ion-checkmark-round balanced"
                        ng-show="quickLoginForm.mobile.$touched && !(quickLoginForm.mobile.$error.required||quickLoginForm.mobile.$error.mobile)"
                        style="position: relative; left: -15px;"></i>
@@ -31,8 +29,12 @@
                        ng-show="quickLoginForm.mobile.$touched && (quickLoginForm.mobile.$error.required||quickLoginForm.mobile.$error.mobile)"
                        style="position: relative; left: -15px;"></i>
                 </label>
+
                 <div style="width: 100%;position: absolute;">
-                    <button ng-show="!(quickLoginForm.mobile.$error.required||quickLoginForm.mobile.$error.mobile)" class="button button-small button-calm" style="position: relative;z-index: 2;float: right;top: -37px;right: 40px;"
+                    <button ng-show="!(quickLoginForm.mobile.$error.required||quickLoginForm.mobile.$error.mobile)"
+                            ng-disabled="leftSeconds != ''"
+                            class="button button-small button-calm"
+                            style="position: relative;z-index: 2;float: right;top: -37px;right: 40px;"
                             ng-click="sendMobileCredentials()">获取验证码{{leftSeconds}}
                     </button>
                 </div>
@@ -57,13 +59,18 @@
                 <div class="assertive" style="font-size: 12px;line-height: 20px;margin-top:5px">{{loginError}}
                 </div>
             </ion-list>
-            <button href="#/forgetpwd" class="button button-calm button-clear button-small" style="padding-left: 0px;">
-                忘记密码
+            <a href="#/tab/resetpwd">
+                <button class="button button-calm button-clear button-small"
+                        style="padding-left: 0px;">
+                    忘记密码
+                </button>
+            </a>
+            <button name="loginBtn" ng-disabled="quickLoginForm.$invalid" class="button button-block button-balanced"
+                    ng-click="signIn(user)">登陆
             </button>
-            <button name="loginBtn" ng-disabled="quickLoginForm.$invalid" class="button button-block button-balanced" ng-click="signIn(user)">登陆</button>
         </form>
 
-        <form name="normalLoginForm" ng-show="loginType == 'Normal'" ng-submit="signIn(user)" novalidate>
+        <form name="normalLoginForm" ng-show="loginType == 'Normal'" novalidate>
             <ion-list>
                 <label class="item item-input">
                     <i class="icon placeholder-icon ion-android-person"></i>
@@ -97,15 +104,22 @@
                 </div>
 
             </ion-list>
-            <button href="#/forgetpwd" class="button button-calm button-clear button-small" style="padding-left: 0px;">
-                忘记密码
+            <a href="#/tab/resetpwd">
+                <button class="button button-calm button-clear button-small" style="padding-left: 0px;">
+                    忘记密码
+                </button>
+            </a>
+            <button name="loginBtn" ng-disabled="normalLoginForm.$invalid" class="button button-balanced button-block"
+                    ng-click="signIn(user)">登陆
             </button>
-            <button name="loginBtn"  ng-disabled="normalLoginForm.$invalid" class="button button-balanced button-block" ng-click="signIn(user)">登陆</button>
         </form>
         <div>
-            <span style="font-size: 12px;line-height: 26px;" style="vertical-align: middle;">没有账号？</span>
-            <a class="item assertive button button-calm button-clear" style="vertical-align: middle" href="#/tab/signup">
-                免费注册
+            <span style="font-size: 12px;line-height: 26px;vertical-align: middle;">没有账号？</span>
+            <a href="#/tab/signup">
+                <button class="item assertive button button-calm button-clear button-small"
+                        style="vertical-align: middle;">
+                    免费注册
+                </button>
             </a>
         </div>
         <div style="text-align: center;margin-bottom: 10px;">

@@ -86,7 +86,7 @@ angular.module('akala.services', [])
                     deferred.resolve(data);
                 });
                 authPromise.error(function (data) {
-                    deferred.reject("连接失败，请重试");
+                    deferred.reject('连接失败，请重试');
                 });
             } else {
                 deferred.resolve(false);
@@ -132,25 +132,25 @@ angular.module('akala.services', [])
                             if (data) {
                                 deferred.resolve('新密码已发送至' + $filter('translate')(userType) + userKey);
                             } else {
-                                deferred.reject("此用户不存在");
+                                deferred.reject('此用户不存在');
                             }
                         });
                         authPromise.error(function (data) {
-                            deferred.reject("连接失败，请重试");
+                            deferred.reject('连接失败，请重试');
                         });
                     } else {
-                        deferred.reject("此用户不存在");
+                        deferred.reject('此用户不存在');
                     }
                 }
             ).catch(function () {
-                    deferred.reject("连接失败，请重试");
+                    deferred.reject('连接失败，请重试');
                 });
 
             return deferred.promise;
         }
     })
 
-    .service("MobileSrv", function ($http, $q, JsonToFormData) {
+    .service('MobileSrv', function ($http, $q, JsonToFormData) {
         var self = this;
         self.$http = $http;
         self.$q = $q;
@@ -171,7 +171,7 @@ angular.module('akala.services', [])
         };
     })
 
-    .service("AddressSrv", function ($rootScope, $http, $q, JsonToFormData) {
+    .service('AddressSrv', function ($rootScope, $http, $q, JsonToFormData) {
         var self = this;
         self.currentAddress = {};
         self.addressList = [];
@@ -256,13 +256,13 @@ angular.module('akala.services', [])
         }
     })
 
-    .service("ShopSrv", function($http, $q){
+    .service('ShopSrv', function ($http, $q) {
         var selectedShopId;
         var self = this;
         self.$http = $http;
         self.$q = $q;
 
-        self.getShopList = function(lng, lat) {
+        self.getShopList = function (lng, lat) {
             var deferred = self.$q.defer();
             var shopPromise = $http.get(akala.httpconf.url + 'ws/shopList', {
                     params: {
@@ -281,7 +281,7 @@ angular.module('akala.services', [])
         }
     })
 
-    .factory("JsonToFormData", function () {
+    .factory('JsonToFormData', function () {
         var param = function (obj) {
             var query = '', name, value, fullSubName, subName, subValue, innerObj, i;
 
@@ -315,51 +315,61 @@ angular.module('akala.services', [])
 
         function transformRequest(data, getHeaders) {
             var headers = getHeaders();
-            headers["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8";
+            headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
             return angular.isObject(data) && String(data) !== '[object File]' ? param(data) : data;
         }
 
         return ( transformRequest );
     })
 
-    .factory("Router2Console", ["$rootScope", function ($rootScope) {
+    .factory('EnableBackBtn', function ($rootScope, $ionicHistory) {
+        var handler = {enableBackStateNames: []};
+        $rootScope.$on('$ionicView.afterEnter', function (arg0, arg1) {
+            if (handler.enableBackStateNames.indexOf(arg1.stateName) != -1) {
+                angular.element(document.querySelectorAll('div[nav-bar=entering] ion-header-bar')[0]).data('$ionHeaderBarController').enableBack(true);
+            }
+        });
+        return handler;
+    })
+
+    .factory('Router2Console', ['$rootScope', function ($rootScope) {
         var handler = {active: false};
         handler.toggle = function () {
             handler.active = !handler.active;
         };
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
             if (handler.active) {
-                console.log("$stateChangeStart --- event, toState, toParams, fromState, fromParams");
+                console.log('$stateChangeStart --- event, toState, toParams, fromState, fromParams');
                 console.log(arguments);
             }
         });
         $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
             if (handler.active) {
-                console.log("$stateChangeError --- event, toState, toParams, fromState, fromParams, error");
+                console.log('$stateChangeError --- event, toState, toParams, fromState, fromParams, error');
                 console.log(arguments);
             }
         });
         $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             if (handler.active) {
-                console.log("$stateChangeSuccess --- event, toState, toParams, fromState, fromParams");
+                console.log('$stateChangeSuccess --- event, toState, toParams, fromState, fromParams');
                 console.log(arguments);
             }
         });
         $rootScope.$on('$viewContentLoading', function (event, viewConfig) {
             if (handler.active) {
-                console.log("$viewContentLoading --- event, viewConfig");
+                console.log('$viewContentLoading --- event, viewConfig');
                 console.log(arguments);
             }
         });
         $rootScope.$on('$viewContentLoaded', function (event) {
             if (handler.active) {
-                console.log("$viewContentLoaded --- event");
+                console.log('$viewContentLoaded --- event');
                 console.log(arguments);
             }
         });
         $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
             if (handler.active) {
-                console.log("$stateNotFound --- event, unfoundState, fromState, fromParams");
+                console.log('$stateNotFound --- event, unfoundState, fromState, fromParams');
                 console.log(arguments);
             }
         });

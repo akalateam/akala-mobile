@@ -5,12 +5,11 @@ angular.module('akala.controllers', [])
     .controller('ShopCtrl', function ($scope, ShopSrv) {
         $scope.myLocation = {
             address: "中山大学珠海校区",
-            lng : 113.591144,
-            lat : 22.367448
+            lng: 113.591144,
+            lat: 22.367448
         };
         $scope.imagePrefixUrl = akala.httpconf.url + "ws/image/";
         $scope.$on('$ionicView.loaded', function (viewInfo, state) {
-            debugger;
             /*
              var geolocation;
              var map = new AMap.Map("mapContainer", {
@@ -87,7 +86,7 @@ angular.module('akala.controllers', [])
         };
     })
 
-    .controller('ShopDetailCtrl', function($scope, ShopSrv){
+    .controller('ShopDetailCtrl', function ($scope, ShopSrv) {
         $scope.$on('$ionicView.loaded', function (viewInfo, state) {
             $scope.shopId = ShopSrv.selectedShopId;
         });
@@ -100,28 +99,32 @@ angular.module('akala.controllers', [])
         };
         $scope.goToAddress = function () {
             if ($rootScope.localUserInfo) {
-                $state.go('tab.address');
+                $state.go('address');
             } else {
                 $state.go('tab.login');
             }
         }
     })
 
-    .controller('LoginCtrl', function ($scope, $state, $ionicLoading, UserSrv,MobileSrv) {
-
+    .controller('LoginCtrl', function ($scope, $state, $ionicLoading, $interval, UserSrv, MobileSrv) {
+        $scope.loginType = 'Quick';
         $scope.leftSeconds = "";
 
         $scope.signIn = function (user) {
-
-            if (!user || !user.userKey || !user.password || !user.mobile || !user.identityCode) {
-                return;
+            if ($scope.loginType == 'Quick') {
+                if (!user || !user.mobile || !user.identityCode) {
+                    return;
+                }
+            } else if ($scope.loginType == 'Normal') {
+                if (!user || !user.userKey || !user.password) {
+                    return;
+                }
             }
-
 
             var userKey = "";
             if ($scope.loginType == 'Quick') {
                 userKey = user.mobile;
-            } else if ($scope.loginType == 'Normal'){
+            } else if ($scope.loginType == 'Normal') {
                 userKey = user.userKey;
             }
             var userInfo = {};
@@ -131,7 +134,7 @@ angular.module('akala.controllers', [])
 
             $ionicLoading.show();
             UserSrv.setLocalUser(userInfo).then(UserSrv.logonWithLocalUser).then(function (user) {
-                $state.go('tab.mine.summary');
+                $state.go('tab.mine');
                 $ionicLoading.hide();
             }).catch(function (error) {
                 $scope.$apply(function (error) {
@@ -141,12 +144,14 @@ angular.module('akala.controllers', [])
             });
         };
 
-        $scope.changeLoginType = function(loginType){
+        $scope.changeLoginType = function (loginType) {
             $scope.loginType = loginType;
-            if (loginType == 'Quick') {
-                this.user.password = '';
-            } else if(loginType == 'Normal') {
-                this.user.identityCode = '';
+            if ($scope.user) {
+                if (loginType == 'Quick') {
+                    $scope.user.password = '';
+                } else if (loginType == 'Normal') {
+                    $scope.user.identityCode = '';
+                }
             }
         };
 
@@ -282,14 +287,14 @@ angular.module('akala.controllers', [])
                 });
             } else {
                 AddressSrv.saveAddress().then(AddressSrv.retrieveAddress).then(function () {
-                    $state.go('tab.address');
+                    $state.go('address');
                 });
             }
         }
 
         $scope.deleteAddress = function () {
             AddressSrv.deleteAddress().then(AddressSrv.retrieveAddress).then(function () {
-                $state.go('tab.address');
+                $state.go('address');
             });
         }
     })
@@ -302,7 +307,7 @@ angular.module('akala.controllers', [])
         }
 
         //init Map Obj
-        $scope.mapObj = new AMap.Map("mapContainer", {
+        $scope.mapObj = new AMap.Map("addressMapContainer", {
             resizeEnable: true,
             view: new AMap.View2D({
                 resizeEnable: true,
@@ -409,7 +414,7 @@ angular.module('akala.controllers', [])
                             AddressSrv.currentAddress.location.lng = addrInfo.location.lng;
                             AddressSrv.currentAddress.location.lat = addrInfo.location.lat;
 
-                            $state.go('tab.address-detail', {
+                            $state.go('address-detail', {
                                 pageType: AddressSrv.pageType,
                                 id: AddressSrv.currentAddress.id
                             });
