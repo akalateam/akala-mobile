@@ -257,6 +257,7 @@ angular.module('akala.services', [])
     })
 
     .service("ShopSrv", function($http, $q){
+        var selectedShopId;
         var self = this;
         self.$http = $http;
         self.$q = $q;

@@ -1,17 +1,18 @@
 <ion-view view-title="<i class='icon ion-ios-location'></i> {{myLocation.address}} <i class='icon ion-android-arrow-dropdown'></i>">
     <ion-content class="padding" class="has-header">
-        <div class="list" ng-show="shopList">
-            <a ng-repeat="shop in shopList"
-               href="#/tab/shop-detail"
+        <div class="list" ng-show="shopGeoResultList">
+            <a ng-repeat="shopGeoResultList in shopGeoResultList"
+               href="#/shop" ng-click="selectedShop(shopGeoResultList.content.id)"
                class="item item-thumbnail-left">
 
-                <img ng-src="{{ imagePrefixUrl }}{{shop.photoId}}">
-                <h2>{{ shop.name }}</h2>
-                <h4>起送价¥{{ shop.minDeliveryAmount }}|配送费¥{{shop.deliveryFee}}|{{shop.avgDeliveryMinutes}}分钟到达</h4>
+                <img ng-src="{{ imagePrefixUrl }}{{shopGeoResultList.content.photoId}}">
+                <h2>{{ shopGeoResultList.content.name }}</h2>
+                <h4>起送价 ¥{{ shopGeoResultList.content.minDeliveryAmount }} | 配送费 ¥{{shopGeoResultList.content.deliveryFee}} | {{shopGeoResultList.content.avgDeliveryMinutes}}分钟到达</h4>
+                <h4>  距离{{ shopGeoResultList.distance.value | number : 2 }}公里</h4>
             </a>
 
         </div>
-        <div ng-show="!shopList">
+        <div ng-show="!shopGeoResultList">
             <a class="item item-icon-left" href="#">
                 <i class="icon ion-mic-a"></i>
                 Record album

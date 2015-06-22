@@ -77,17 +77,20 @@ angular.module('akala.controllers', [])
              });*/
         });
         $scope.$on('$ionicView.loaded', function (viewInfo, state) {
-            ShopSrv.getShopList($scope.myLocation.lng, $scope.myLocation.lat).then(function(shopList){
-                $scope.shopList = shopList;
-                //$scope.$apply(function(shopList) {
-                //    $scope.shopList = shopList;
-                //}(shopList));
+            ShopSrv.getShopList($scope.myLocation.lng, $scope.myLocation.lat).then(function(shopGeoResultList){
+                $scope.shopGeoResultList = shopGeoResultList;
             });
-        })
+        });
+
+        $scope.selectedShop = function(shopId) {
+            ShopSrv.selectedShopId = shopId;
+        };
     })
 
     .controller('ShopDetailCtrl', function($scope, ShopSrv){
-
+        $scope.$on('$ionicView.loaded', function (viewInfo, state) {
+            $scope.shopId = ShopSrv.selectedShopId;
+        });
     })
 
     .controller('MineCtrl', function ($scope, $rootScope, $state, UserSrv) {
