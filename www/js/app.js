@@ -10,10 +10,11 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
             StatusBar.styleLightContent();
         }
     });
-}).run(function ($rootScope, $http, $window, UserSrv, Router2Console, EnableBackBtn) {
+}).run(function ($rootScope, $http, $window, UserSrv, Router2Console, EnableBackBtn, EnableLightHeader) {
     UserSrv.logonWithLocalUser();
     Router2Console.active = $window.akala.enableDebug;
-    EnableBackBtn.enableBackStateNames = ['address'];
+    EnableBackBtn.enableBackStateNames = ['address', 'shop-detail'];
+    EnableLightHeader.enableLightHeaderStateNames = ['shop-detail'];
 }).constant('$ionicLoadingConfig', {
     template: '<ion-spinner class="spinner-balanced"></ion-spinner>'
 }).config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
@@ -103,15 +104,10 @@ angular.module('akala', ['ionic', 'akala.services', 'akala.directives', 'akala.f
             controller: 'AddressMapCtrl'
         })
 
-        .state('tab.shop-detail', {
+        .state('shop-detail', {
             url: '/shop-detail',
-            views: {
-                'tab-shop': {
-                    templateUrl: 'templates/shop/shop-detail.html',
-                    controller: 'ShopDetailCtrl'
-                }
-            }
-
+            templateUrl: 'templates/shop/shop-detail.html',
+            controller: 'ShopDetailCtrl'
         });
 
     // if none of the above states are matched, use this as the fallback
