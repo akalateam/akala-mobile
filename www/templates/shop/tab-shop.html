@@ -2,7 +2,7 @@
     <ion-content class="padding" class="has-header">
         <div class="list" ng-show="shopGeoResultList">
             <a ng-repeat="shopGeoResultList in shopGeoResultList"
-               href="#/shop" ng-click="selectedShop(shopGeoResultList.content.id)"
+               href="#/shop-detail" ng-click="selectedShop(shopGeoResultList.content.id)"
                class="item item-thumbnail-left">
 
                 <img ng-src="{{ imagePrefixUrl }}{{shopGeoResultList.content.photoId}}">
