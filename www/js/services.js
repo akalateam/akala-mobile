@@ -322,11 +322,40 @@ angular.module('akala.services', [])
         return ( transformRequest );
     })
 
-    .factory('EnableBackBtn', function ($rootScope, $ionicHistory) {
+    .factory('EnableBackBtn', function ($rootScope) {
         var handler = {enableBackStateNames: []};
         $rootScope.$on('$ionicView.afterEnter', function (arg0, arg1) {
             if (handler.enableBackStateNames.indexOf(arg1.stateName) != -1) {
                 angular.element(document.querySelectorAll('div[nav-bar=entering] ion-header-bar')[0]).data('$ionHeaderBarController').enableBack(true);
+            }
+        });
+        return handler;
+    })
+
+    .factory('EnableLightHeader', function ($rootScope) {
+        var handler = {enableLightHeaderStateNames: []};
+        $rootScope.$on('$ionicView.afterEnter', function (arg0, arg1) {
+            if (handler.enableLightHeaderStateNames.indexOf(arg1.stateName) != -1) {
+                var back = angular.element(document.querySelectorAll('[class*=back-button]'));
+                back.addClass('button-calm');
+                var nav = angular.element(document.querySelectorAll('ion-nav-bar'));
+                nav.removeClass('bar-calm');
+                nav.addClass('bar-light');
+                var bars = angular.element(document.querySelectorAll('ion-nav-bar [class*=bar-calm]'));
+                bars.removeClass('bar-calm');
+                bars.addClass('bar-light');
+            }
+        });
+        $rootScope.$on('$ionicView.afterLeave', function (arg0, arg1) {
+            if (handler.enableLightHeaderStateNames.indexOf(arg1.stateName) != -1) {
+                var back = angular.element(document.querySelectorAll('[class*=back-button]'));
+                back.removeClass('button-calm');
+                var nav = angular.element(document.querySelectorAll('ion-nav-bar'));
+                nav.removeClass('bar-light');
+                nav.addClass('bar-calm');
+                var bars = angular.element(document.querySelectorAll('ion-nav-bar [class*=bar-light]'));
+                bars.removeClass('bar-light');
+                bars.addClass('bar-calm');
             }
         });
         return handler;
